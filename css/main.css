@@ -325,3 +325,19 @@ footer small {
 .hidden {
     display: none;
 }
+
+@media (max-width: 500px) {
+    .search-container {
+        flex-direction: column;
+        padding: 0;
+        margin: 10px 0;
+        height: auto;
+    }
+    .search-tags {
+        font-size: 12px;
+        margin: 10px 0;
+    }
+    .gallery {
+        padding: 5px 5px;
+    }
+}
