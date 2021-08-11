@@ -56,6 +56,7 @@ header nav ul {
 header nav ul li {
     margin-left: 1.25rem;
     display: inline-flex;
+    text-decoration: none;
 }
 
 header nav ul li a {
@@ -110,6 +111,7 @@ header nav ul li a:hover {
     padding: 5px 10px;
     margin-left: 10px;
     cursor: pointer;
+    user-select: none;
 }
 .search-tags span:hover {
     font-weight: 700;
@@ -141,25 +143,25 @@ header nav ul li a:hover {
 }
 
 /* ABOUT ME */
-#about {
+.about {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 300px;
 }
-#about img {
+.about img {
     height: 161px;
     width: 161px;
     border-radius: 50%;
     margin-right: 20px;
 }
-#about div {
+.about div {
     width: 360px;
 }
-#about div h4 {
+.about div h4 {
     margin-bottom: 5px;
 }
-#about div p {
+.about div p {
     margin-top: 0;
 }
 
@@ -182,8 +184,9 @@ header nav ul li a:hover {
 
 /* EDITOR */
 .editor {
+    display: none;
     background-color: #e3e3e3;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
     padding: 13px 25px;
@@ -191,6 +194,7 @@ header nav ul li a:hover {
 .canvas {
     width: 280px;
     height: 280px;
+    margin-right: 30px;
 }
 .tools {
     display: flex;
@@ -244,11 +248,15 @@ header nav ul li a:hover {
 .tools-row3 .font option {
 }
 .text-stroke {
-    display: none;
+    height: 0;
+    width: 0;
+    visibility: hidden;
 }
 
 .text-color {
-    display: none;
+    height: 0;
+    width: 0;
+    visibility: hidden;
 }
 
 .tools-row4 {
@@ -310,4 +318,7 @@ footer small {
 }
 .selectable {
     cursor: pointer;
+}
+.hidden {
+    display: none;
 }

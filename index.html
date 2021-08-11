@@ -9,14 +9,14 @@
         <title>memegen by Martin Sh.</title>
     </head>
 
-    <body>
+    <body onload="onInit()">
         <header>
             <img src="img/logo.png" class="logo" />
             <nav>
                 <ul>
-                    <li><a onclick="onGallery()">Gallery</a></li>
+                    <li><a onclick="onGallery(this)">Gallery</a></li>
                     <li><a onclick="onMemes()">Memes</a></li>
-                    <li><a onclick="onAbout()">About</a></li>
+                    <li><a href="#about">About</a></li>
                 </ul>
             </nav>
         </header>
@@ -41,7 +41,7 @@
             <img class="img id-7" src="img/gallery/7.jpg" onclick="onImageGallery(this)" />
             <img class="img id-8" src="img/gallery/8.jpg" onclick="onImageGallery(this)" />
         </section>
-        <section id="about">
+        <section id="about" class="about">
             <img src="img/me.jpg" />
             <div>
                 <h4>Martin Shniedmeser</h4>
@@ -54,7 +54,9 @@
             </div>
         </section>
         <section class="editor">
-            <canvas class="canvas">Your browser do not support this app.</canvas>
+            <div class="canvas-container">
+                <canvas class="canvas">Your browser do not support this app.</canvas>
+            </div>
             <div class="tools">
                 <input type="text" class="meme-text" />
                 <div class="tools-row1 flex">
@@ -75,10 +77,10 @@
                         <option value="lato">Lato</option>
                         <option value="secular">Secular(hebrew)</option>
                     </select>
-                    <input type="color" class="text-stroke" />
-                    <img class="icon selectable" src="img/ICONS/text stroke.png" onclick="onStrokeColor()" />
-                    <input type="color" class="text-color" />
-                    <img class="icon selectable" src="img/ICONS/paint-board-and-brush.png" onclick="onFontColor()" />
+                    <input type="color" class="text-stroke" value="#000000" onchange="onStrokeColorSelect(this)" />
+                    <img class="icon selectable text-stroke-icon" src="img/ICONS/text stroke.png" onclick="onStrokeColor()" />
+                    <input type="color" class="text-color" value="#FFFFFF" onchange="onFontColorSelect(this)" />
+                    <img class="icon selectable text-color-icon" src="img/ICONS/paint-board-and-brush.png" onclick="onFontColor()" />
                 </div>
                 <div class="tools-row4 flex">
                     <img src="img/ICONS/back-svgrepo-com.svg" onclick="onLeftSticker()" />
@@ -96,6 +98,8 @@
             <img src="img/logo.png" class="logo" />
             <small>all rights reserved 2021</small>
         </footer>
+        <script src="js/gallery.js"></script>
+        <script src="js/search.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>
