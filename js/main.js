@@ -75,6 +75,10 @@ function onMemes() {}
 
 function onImageGallery(imgName, imgId) {
     loadImage(imgName);
+    currTextLine = 0;
+    currPos = {};
+    gMeme = {};
+    document.querySelector('.meme-text').value = '';
     gMeme.selectedImgId = imgId;
     gMeme.selectedImgName = imgName;
     gMeme.selectedLineIdx = 0;
@@ -91,6 +95,7 @@ function onImageGallery(imgName, imgId) {
     ];
 
     switchDisplay();
+    document.querySelector('.meme-text').focus();
 }
 
 function switchDisplay() {
@@ -116,18 +121,22 @@ function onAddText() {
         font: document.querySelector('.font').value,
     });
     currTextLine = gMeme.lines.length - 1;
-    if (currTextLine === 1) currPos = { x: gElCanvas.width / 2, y: gElCanvas.height - 30 };
+
+    if (currTextLine === 0) currPos = { x: gElCanvas.width / 2, y: 30 };
+    else if (currTextLine === 1) currPos = { x: gElCanvas.width / 2, y: gElCanvas.height - 30 };
     else currPos = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
     gMeme.lines[currTextLine].x = currPos.x;
     gMeme.lines[currTextLine].y = currPos.y;
     document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
     document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
     renderCanvas();
+    document.querySelector('.meme-text').focus();
 }
 
 function onUpDown() {
     currTextLine++;
-    if (currTextLine === gMeme.lines.length) currTextLine = 0;
+    if (currTextLine >= gMeme.lines.length) currTextLine = 0;
+    if (!gMeme.lines[currTextLine].txt) return;
     document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
     document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
     document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
@@ -137,7 +146,13 @@ function onUpDown() {
 
 function onDeleteText() {
     gMeme.lines.splice(currTextLine, 1);
+    if (gMeme.lines.length === 0) {
+        onAddText();
+        return;
+    }
+    onUpDown();
     renderCanvas();
+    document.querySelector('.meme-text').focus();
 }
 
 function onIncFont() {
