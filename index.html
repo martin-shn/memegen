@@ -1,18 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/png" href="img/favicon.jpg" />
+        <link rel="stylesheet" href="css/main.css" />
+        <title>memegen by Martin Sh.</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="img/favicon.jpg"/>
-    <link rel="stylesheet" href="css/main.css">
-    <title>memegen by Martin Sh.</title>
-</head>
-
-<body>
-    
-    <script src="js/main.js"></script>
-</body>
-
+    <body>
+        <header>
+            <img src="img/logo.png" class="logo" />
+            <nav>
+                <ul>
+                    <li><a onclick="onGallery()">Gallery</a></li>
+                    <li><a onclick="onMemes()">Memes</a></li>
+                    <li><a onclick="onAbout()">About</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="search-container">
+            <input type="text" onchange="onSearchKeywords(this)" placeholder="Enter search keyword" />
+            <div class="search-tags">
+                <span>funny</span>
+                <span>comics</span>
+                <span>dogs</span>
+                <span>dogs</span>
+                <span>dogs</span>
+            </div>
+            <a onclick="onSearchMore()">more...</a>
+        </div>
+        <section class="gallery">
+            <img class="img id-1" src="img/gallery/1.jpg" onclick="onImageGallery(this)" />
+            <img class="img id-2" src="img/gallery/2.jpg" onclick="onImageGallery(this)" />
+            <img class="img id-3" src="img/gallery/3.jpg" onclick="onImageGallery(this)" />
+            <img class="img id-4" src="img/gallery/4.jpg" onclick="onImageGallery(this)" />
+            <img class="img id-5" src="img/gallery/5.jpg" onclick="onImageGallery(this)" />
+            <img class="img id-6" src="img/gallery/6.jpg" onclick="onImageGallery(this)" />
+            <img class="img id-7" src="img/gallery/7.jpg" onclick="onImageGallery(this)" />
+            <img class="img id-8" src="img/gallery/8.jpg" onclick="onImageGallery(this)" />
+        </section>
+        <section id="about">
+            <img src="img/me.jpg" />
+            <div>
+                <h4>Martin Shniedmeser</h4>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas mollitia officia numquam quas dolor totam ipsa iusto laudantium cupiditate ea pariatur quidem nihil, ullam modi maiores deleniti qui beatae! Beatae.</p>
+                <div class="socials">
+                    <a href="#"></a>
+                    <a href="#"></a>
+                    <a href="#"></a>
+                </div>
+            </div>
+        </section>
+        <section class="editor">
+            <canvas class="canvas">Your browser do not support this app.</canvas>
+            <div class="tools">
+                <input type="text" class="meme-text" />
+                <div class="tools-row1 flex">
+                    <img class="icon selectable" src="img/ICONS/up-and-down-opposite-double-arrows-side-by-side.png" onclick="onUpDown()" />
+                    <img class="icon selectable" src="img/ICONS/add.png" onclick="onAddText()" />
+                    <img class="icon selectable" src="img/ICONS/trash.png" onclick="onDeleteText()" />
+                </div>
+                <div class="tools-row2 flex">
+                    <img class="icon selectable" src="img/ICONS/increase font - icon.png" onclick="onIncFont()" />
+                    <img class="icon selectable" src="img/ICONS/decrease font - icon.png" onclick="onDecFont()" />
+                    <img class="icon selectable" src="img/ICONS/align-to-left.png" onclick="onAlignLeft()" />
+                    <img class="icon selectable" src="img/ICONS/center-text-alignment.png" onclick="onAlignCenter()" />
+                    <img class="icon selectable" src="img/ICONS/align-to-right.png" onclick="onAlignRight()" />
+                </div>
+                <div class="tools-row3 flex">
+                    <select class="font">
+                        <option value="impact" selected>Impact</option>
+                        <option value="lato">Lato</option>
+                        <option value="secular">Secular(hebrew)</option>
+                    </select>
+                    <input type="color" class="text-stroke" />
+                    <img class="icon selectable" src="img/ICONS/text stroke.png" onclick="onStrokeColor()" />
+                    <input type="color" class="text-color" />
+                    <img class="icon selectable" src="img/ICONS/paint-board-and-brush.png" onclick="onFontColor()" />
+                </div>
+                <div class="tools-row4 flex">
+                    <img src="img/ICONS/back-svgrepo-com.svg" onclick="onLeftSticker()" />
+                    <div class="stickers">
+                        <img src="img/ICONS/stickers/S1.png" onclick="onSticker(this)" />
+                        <img src="img/ICONS/stickers/S2.png" onclick="onSticker(this)" />
+                        <img src="img/ICONS/stickers/S3.png" onclick="onSticker(this)" />
+                    </div>
+                    <img src="img/ICONS/move-to-the-next-page-symbol-svgrepo-com.svg" onclick="onRightSticker()" />
+                </div>
+                <button onclick="onShare()">Share</button>
+            </div>
+        </section>
+        <footer>
+            <img src="img/logo.png" class="logo" />
+            <small>all rights reserved 2021</small>
+        </footer>
+        <script src="js/main.js"></script>
+    </body>
 </html>
