@@ -33,7 +33,7 @@
         </div>
         <section class="gallery">
             <img class="img id-1" src="img/gallery/1.jpg" onclick="onImageGallery(this)" />
-            <img class="img id-2" src="img/gallery/2.jpg" onclick="onImageGallery(this)" />
+            <img class="img id-2" src="img/gallery/2.jpg" onclick="onImageGallery('2.jpg')" />
             <img class="img id-3" src="img/gallery/3.jpg" onclick="onImageGallery(this)" />
             <img class="img id-4" src="img/gallery/4.jpg" onclick="onImageGallery(this)" />
             <img class="img id-5" src="img/gallery/5.jpg" onclick="onImageGallery(this)" />
@@ -55,10 +55,10 @@
         </section>
         <section class="editor">
             <div class="canvas-container">
-                <canvas class="canvas">Your browser do not support this app.</canvas>
+                <canvas width="280" height="280" class="canvas">Your browser do not support this app.</canvas>
             </div>
             <div class="tools">
-                <input type="text" class="meme-text" />
+                <input type="text" class="meme-text" onkeyup="onUpdateText()" />
                 <div class="tools-row1 flex">
                     <img class="icon selectable" src="img/ICONS/up-and-down-opposite-double-arrows-side-by-side.png" onclick="onUpDown()" />
                     <img class="icon selectable" src="img/ICONS/add.png" onclick="onAddText()" />
@@ -67,20 +67,20 @@
                 <div class="tools-row2 flex">
                     <img class="icon selectable" src="img/ICONS/increase font - icon.png" onclick="onIncFont()" />
                     <img class="icon selectable" src="img/ICONS/decrease font - icon.png" onclick="onDecFont()" />
-                    <img class="icon selectable" src="img/ICONS/align-to-left.png" onclick="onAlignLeft()" />
-                    <img class="icon selectable" src="img/ICONS/center-text-alignment.png" onclick="onAlignCenter()" />
-                    <img class="icon selectable" src="img/ICONS/align-to-right.png" onclick="onAlignRight()" />
+                    <img class="icon selectable" src="img/ICONS/align-to-left.png" onclick="onAlign('left')" />
+                    <img class="icon selectable" src="img/ICONS/center-text-alignment.png" onclick="onAlign('center')" />
+                    <img class="icon selectable" src="img/ICONS/align-to-right.png" onclick="onAlign('right')" />
                 </div>
                 <div class="tools-row3 flex">
-                    <select class="font">
-                        <option value="impact" selected>Impact</option>
-                        <option value="lato">Lato</option>
-                        <option value="secular">Secular(hebrew)</option>
+                    <select class="font" onchange="onSelectFont(this.value)">
+                        <option value="Impact" selected>Impact</option>
+                        <option value="Lato">Lato</option>
+                        <option value="Secular">Secular(hebrew)</option>
                     </select>
                     <input type="color" class="text-stroke" value="#000000" onchange="onStrokeColorSelect(this)" />
-                    <img class="icon selectable text-stroke-icon" src="img/ICONS/text stroke.png" onclick="onStrokeColor()" />
+                    <img class="icon selectable text-stroke-icon" src="img/ICONS/text stroke.png" onclick="onStrokeColor()" title="Text Stroke" />
                     <input type="color" class="text-color" value="#FFFFFF" onchange="onFontColorSelect(this)" />
-                    <img class="icon selectable text-color-icon" src="img/ICONS/paint-board-and-brush.png" onclick="onFontColor()" />
+                    <img class="icon selectable text-color-icon" src="img/ICONS/paint-board-and-brush.png" onclick="onFontColor()" title="Text Fill Color" />
                 </div>
                 <div class="tools-row4 flex">
                     <img src="img/ICONS/back-svgrepo-com.svg" onclick="onLeftSticker()" />
@@ -99,6 +99,7 @@
             <small>all rights reserved 2021</small>
         </footer>
         <script src="js/gallery.js"></script>
+        <script src="js/editor.js"></script>
         <script src="js/search.js"></script>
         <script src="js/main.js"></script>
     </body>

@@ -26,21 +26,18 @@ function createGallery() {
     //<img class="img id-1" src="img/gallery/1.jpg" onclick="onImageGallery(this)" />
     let strHTML = memeImgs
         .map(function (memeImg) {
-            return `<img class="img id-${memeImg.id}" src="img/gallery/${memeImg.name}" onclick="onImageGallery(${memeImg.id})" />`;
+            return `<img class="img id-${memeImg.id}" src="img/gallery/${memeImg.name}" onclick="onImageGallery('${memeImg.name}',${memeImg.id})" />`;
         })
         .join('');
     elGallery.innerHTML = strHTML;
 }
 
-function loadImage(imgId) {
+function loadImage(imgName) {
     // console.log(imgId);
-    let memeImg = memeImgs.find(function (mem) {
-        return mem.id === imgId;
-    });
-    console.log(memeImg.name);
     var img = new Image();
-    img.src = `img/gallery/${memeImg.name}`;
+    img.src = `img/gallery/${imgName}`;
     img.onload = () => {
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height); //img,x,y,xend,yend
     };
+    
 }
