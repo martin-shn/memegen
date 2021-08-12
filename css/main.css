@@ -249,7 +249,7 @@ header nav ul li a:hover {
     width: 100%;
     justify-content: space-between;
 }
-tools-row3 .font{
+.tools-row3 .font {
     background-color: #fff;
 }
 .tools-row3 > img:last-child {
