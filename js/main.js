@@ -255,6 +255,7 @@ function addTouchListeners() {
 }
 
 function onClick(ev) {
+    ev.preventDefault();
     const pos = getEvPos(ev);
     // if (!isTextClicked(pos, currArea)) return;
     let clickedLine = findTextClicked(pos);
@@ -266,8 +267,8 @@ function onClick(ev) {
 }
 
 function onDown(ev) {
+    ev.preventDefault();
     const pos = getEvPos(ev);
-    // if (!isTextClicked(pos, currArea)) return;
     let clickedLine = findTextClicked(pos);
     if (clickedLine >= 0) currTextLine = clickedLine;
     else return;
@@ -277,7 +278,7 @@ function onDown(ev) {
 }
 
 function onMove(ev) {
-    // const circle = getCircle();
+    ev.preventDefault();
     if (gIsDown) {
         const pos = getEvPos(ev);
         const dx = pos.x - gLastPos.x;
