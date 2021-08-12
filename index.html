@@ -13,33 +13,23 @@
         <header>
             <img src="img/logo.png" class="logo" />
             <nav>
+                <button class="hamburger-btn hidden" onclick="onOpenMenu()"></button>
                 <ul>
                     <li><a onclick="onGallery(this)">Gallery</a></li>
                     <li><a onclick="onMemes()">Memes</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="#about" onclick="onOpenMenu()">About</a></li>
                 </ul>
             </nav>
         </header>
         <div class="search-container">
-            <input type="text" onchange="onSearchKeywords(this)" placeholder="Enter search keyword" />
+            <input type="text" oninput="onSearchKeywords(this.value)" placeholder="Enter search keyword" />
             <div class="search-tags">
-                <span>funny</span>
-                <span>comics</span>
-                <span>dogs</span>
-                <span>dogs</span>
-                <span>dogs</span>
+                <!-- TAG WORDS -->
             </div>
             <a onclick="onSearchMore()">more...</a>
         </div>
         <section class="gallery">
-            <img class="img id-1" src="img/gallery/1.jpg" onclick="onImageGallery(this)" />
-            <img class="img id-2" src="img/gallery/2.jpg" onclick="onImageGallery('2.jpg')" />
-            <img class="img id-3" src="img/gallery/3.jpg" onclick="onImageGallery(this)" />
-            <img class="img id-4" src="img/gallery/4.jpg" onclick="onImageGallery(this)" />
-            <img class="img id-5" src="img/gallery/5.jpg" onclick="onImageGallery(this)" />
-            <img class="img id-6" src="img/gallery/6.jpg" onclick="onImageGallery(this)" />
-            <img class="img id-7" src="img/gallery/7.jpg" onclick="onImageGallery(this)" />
-            <img class="img id-8" src="img/gallery/8.jpg" onclick="onImageGallery(this)" />
+            <!-- GALLERY IMAGES -->
         </section>
         <section id="about" class="about">
             <img src="img/me.jpg" />
@@ -58,7 +48,7 @@
                 <canvas width="280" height="280" class="canvas">Your browser do not support this app.</canvas>
             </div>
             <div class="tools">
-                <input type="text" class="meme-text" onkeyup="onUpdateText()" />
+                <input type="text" class="meme-text" oninput="onUpdateText()" />
                 <div class="tools-row1 flex">
                     <img class="icon selectable" src="img/ICONS/up-and-down-opposite-double-arrows-side-by-side.png" onclick="onUpDown()" />
                     <img class="icon selectable" src="img/ICONS/add.png" onclick="onAddText()" />
@@ -91,13 +81,19 @@
                     </div>
                     <img src="img/ICONS/move-to-the-next-page-symbol-svgrepo-com.svg" onclick="onRightSticker()" />
                 </div>
-                <button onclick="onShare()">Share</button>
+                <div class="tools-row5 flex">
+                    <button onclick="onShare()">Share on Facebook</button>
+                    <button onclick="onSave()">Save</button>
+                    <button onclick="onDownload()">Download</button>
+                </div>
             </div>
         </section>
         <footer>
             <img src="img/logo.png" class="logo" />
             <small>all rights reserved 2021</small>
         </footer>
+        <script src="js/storageService.js"></script>
+        <script src="js/share.js"></script>
         <script src="js/gallery.js"></script>
         <script src="js/editor.js"></script>
         <script src="js/search.js"></script>

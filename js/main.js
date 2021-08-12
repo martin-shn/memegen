@@ -21,7 +21,7 @@ function onInit() {
     addListeners();
 }
 
-function renderCanvas() {
+function renderCanvas(isOutline=true) {
     // gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
     var img = new Image();
     img.src = `img/gallery/${gMeme.selectedImgName}`;
@@ -37,26 +37,29 @@ function renderCanvas() {
             gCtx.strokeText(line.txt, line.x, line.y);
         });
         //draw the outline of the selected text
-        if (!gMeme.lines[currTextLine].txt) return;
-        gCtx.beginPath();
-        gCtx.strokeStyle = '#FF0000';
-        let textWidth = gCtx.measureText(gMeme.lines[currTextLine].txt).width;
-        let textHeight = gMeme.lines[currTextLine].size;
-        switch (gMeme.lines[currTextLine].align) {
-            case 'left':
-                gCtx.rect(0, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                currArea = { startX: 0, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
-                break;
-            case 'center':
-                gCtx.rect(gMeme.lines[currTextLine].x - textWidth / 2 - 5, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                currArea = { startX: gMeme.lines[currTextLine].x - textWidth / 2 - 5, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
-                break;
-            case 'right':
-                gCtx.rect(gElCanvas.width - textWidth - 10, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                currArea = { startX: gElCanvas.width - textWidth - 10, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
-                break;
+        if (isOutline) {
+            if (!gMeme.lines[currTextLine].txt) return;
+            gCtx.beginPath();
+            gCtx.strokeStyle = '#FF0000';
+            let textWidth = gCtx.measureText(gMeme.lines[currTextLine].txt).width;
+            let textHeight = gMeme.lines[currTextLine].size;
+            switch (gMeme.lines[currTextLine].align) {
+                case 'left':
+                    gCtx.rect(0, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    currArea = { startX: 0, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    break;
+                case 'center':
+                    gCtx.rect(gMeme.lines[currTextLine].x - textWidth / 2 - 5, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    currArea = { startX: gMeme.lines[currTextLine].x - textWidth / 2 - 5, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    break;
+                case 'right':
+                    gCtx.rect(gElCanvas.width - textWidth - 10, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    currArea = { startX: gElCanvas.width - textWidth - 10, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    break;
+            }
+            gCtx.stroke();
+            gMeme.lines[currTextLine].area = currArea;
         }
-        gCtx.stroke();
     };
     // loadImage(gMeme.selectedImgName);
 }
@@ -69,6 +72,7 @@ function resizeCanvas() {
 
 function onGallery(el) {
     switchDisplay();
+    onOpenMenu();
 }
 
 function onMemes() {}
@@ -156,7 +160,7 @@ function onDeleteText() {
 }
 
 function onIncFont() {
-    if (gMeme.lines[currTextLine].size > 30) return;
+    // if (gMeme.lines[currTextLine].size > 30) return;
     gMeme.lines[currTextLine].size++;
     renderCanvas();
 }
@@ -206,16 +210,19 @@ function onFontColorSelect(el) {
 function addListeners() {
     addMouseListeners();
     addTouchListeners();
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        renderCanvas();
-    });
+    // window.addEventListener('resize', () => {
+    //     resizeCanvas();
+    //     renderCanvas();
+    // });
 }
 
 function addMouseListeners() {
     gElCanvas.addEventListener('mousemove', onMove);
     gElCanvas.addEventListener('mousedown', onDown);
     gElCanvas.addEventListener('mouseup', onUp);
+    gElCanvas.addEventListener('mouseleave', onUp);
+    gElCanvas.addEventListener('click', onClick);
+
 }
 
 function addTouchListeners() {
@@ -224,9 +231,24 @@ function addTouchListeners() {
     gElCanvas.addEventListener('touchend', onUp);
 }
 
+function onClick(ev){
+    const pos = getEvPos(ev);
+    // if (!isTextClicked(pos, currArea)) return;
+    let clickedLine=findTextClicked(pos);
+    if (clickedLine>=0) currTextLine=clickedLine;
+    else return;
+    currTextLine--;
+    onUpDown();
+    renderCanvas();
+
+}
+
 function onDown(ev) {
     const pos = getEvPos(ev);
-    if (!isTextClicked(pos, currArea)) return;
+    // if (!isTextClicked(pos, currArea)) return;
+    let clickedLine=findTextClicked(pos);
+    if (clickedLine>=0) currTextLine=clickedLine;
+    else return;
     setTextDrag(true);
     gLastPos = pos;
     document.body.style.cursor = 'grabbing';
@@ -244,7 +266,7 @@ function onMove(ev) {
     }
 }
 
-function onUp() {
+function onUp(ev) {
     setTextDrag(false);
     document.body.style.cursor = 'grab';
 }
@@ -263,4 +285,46 @@ function getEvPos(ev) {
         };
     }
     return pos;
+}
+
+function onShare() {
+    renderCanvas(false);
+    setTimeout(shareImg,1000);
+}
+
+function onDownload() {
+    renderCanvas(false);
+    setTimeout(downloadMeme,1000);
+}
+
+function onSave(){
+    let userMemes = loadFromStorage('userMemes');
+    if (userMemes){
+        // add to storage
+        userMemes.push(gMeme);
+    }else{
+        // create first storage
+        userMemes=[gMeme];
+    }
+    saveToStorage('userMemes',userMemes);
+}
+
+function onOpenMenu() {
+    document.querySelector('nav').classList.toggle('shown');
+}
+
+function onSearchMore() {
+    if (document.querySelectorAll('.search-tags span').length > 5) {
+        updateTags(5);
+        document.querySelector('.search-container a').innerText = 'more...';
+    } else {
+        updateTags();
+        document.querySelector('.search-container a').innerText = 'close!';
+    }
+    document.querySelector('.search-container').classList.toggle('more');
+}
+
+function onSearchKeywords(searchText) {
+    let searchResults = findImgs(searchText);
+    createGallery(searchResults);
 }

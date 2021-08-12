@@ -7,6 +7,10 @@
     src: url(../fonts/Brands/fa-brands-400.ttf);
 }
 @font-face {
+    font-family: Icons;
+    src: url(../fonts/Brands/fa-solid-900.ttf);
+}
+@font-face {
     font-family: Lato;
     src: url(../fonts/Lato-Regular.ttf);
 }
@@ -40,6 +44,7 @@ img.logo {
 }
 header nav {
     height: 100%;
+    z-index: 2;
 }
 
 header nav ul {
@@ -78,7 +83,12 @@ header nav ul li a:hover {
     padding-left: 25px;
     height: 4rem;
 }
-
+.search-container.more {
+    height: 100%;
+}
+.search-container.more .search-tags {
+    flex-wrap: wrap;
+}
 .search-container input::placeholder {
     color: #7a7a7a;
 }
@@ -94,6 +104,7 @@ header nav ul li a:hover {
     background-size: 10px;
     background-repeat: no-repeat;
     padding-right: 15px;
+    z-index: 1;
 }
 
 .search-container input:focus-visible {
@@ -105,6 +116,9 @@ header nav ul li a:hover {
     display: flex;
     justify-content: flex-end;
     flex-grow: 1;
+    overflow: hidden;
+    align-items: center;
+    mix-blend-mode: screen;
 }
 
 .search-tags span {
@@ -285,10 +299,16 @@ header nav ul li a:hover {
     height: 35px;
     cursor: pointer;
 }
-.tools button {
-    align-self: flex-end;
+
+.tools-row5 {
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.tools-row5 button {
     background-color: #ff7f00;
-    padding: 10px 15px;
+    padding: 10px 5px;
     border-radius: 6px;
     border: 0;
     font-size: 0.625rem;
@@ -327,17 +347,141 @@ footer small {
 }
 
 @media (max-width: 500px) {
-    .search-container {
+    header nav {
+        background-color: #ff7f00;
+        height: 0;
+        /* position: absolute; */
+        top: 32px;
+        left: 0;
+        width: 100%;
+    }
+    header nav.shown {
+        position: absolute;
+        top: 32px;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        transition: height 1s;
+    }
+    header nav.shown ul {
+        /* display: flex; */
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 2.5s;
+    }
+    header nav ul {
         flex-direction: column;
+        /* display: none; */
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+    header nav ul li,
+    header nav ul li a {
+        color: #fff;
+        width: 95%;
+    }
+    .hamburger-btn::before {
+        /* hamburger icon */
+        content: '\f805';
+        /* bars icon
+        f0c9  */
+    }
+    nav.shown .hamburger-btn::before {
+        content: '\f00d';
+    }
+    nav.shown .hamburger-btn {
+        top: -32px;
+    }
+    .hamburger-btn {
+        font-family: Icons;
+        display: inline-block;
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        background-color: transparent;
+        border: 0;
+        cursor: pointer;
+        font-size: 1.25rem;
+        color: #fff;
+        padding: 5px;
+    }
+
+    .search-container.hidden {
+        display: none;
+    }
+    .search-container {
+        display: grid;
+        grid-template-areas:
+            'search search'
+            'tags more';
+        grid-template-rows: 20px 1fr;
+        grid-template-columns: 1fr 50px;
+
         padding: 0;
         margin: 10px 0;
-        height: auto;
+        height: 60px;
+    }
+    .search-container input {
+        grid-area: search;
+        justify-self: center;
     }
     .search-tags {
-        font-size: 12px;
+        grid-area: tags;
+        font-size: 8px;
         margin: 10px 0;
+        width: 100%;
+        justify-content: space-around;
+    }
+    .search-tags span {
+        padding: 2px;
+        margin: 0;
+        /* z-index: -1; */
+    }
+    .search-container a {
+        grid-area: more;
+        margin-right: 0;
     }
     .gallery {
         padding: 5px 5px;
+    }
+    .gallery img {
+        width: 80px;
+        height: 80px;
+        margin: 2px;
+    }
+    .about {
+        flex-direction: column;
+        height: unset;
+        padding: 20px 0;
+    }
+    h4 {
+        color: #ff7f00;
+        font-size: 0.68rem;
+    }
+    .about img {
+        width: 80px;
+        height: 80px;
+        margin-right: 0;
+    }
+    .about div {
+        width: unset;
+        margin: 10px 20px;
+        text-align: center;
+    }
+    .about p {
+        font-size: 0.5rem;
+    }
+    .socials a {
+        font-size: 2em;
+    }
+    .editor {
+        flex-direction: column;
+    }
+    .canvas-container {
+        margin-right: 0;
+    }
+    .tools {
+        margin-top: 10px;
     }
 }

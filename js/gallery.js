@@ -21,10 +21,10 @@ let memeImgs = [
     { id: 18, name: '18.jpg', tags: ['tv', 'toys', 'baby'] },
 ];
 
-function createGallery() {
+function createGallery(data = memeImgs) {
     var elGallery = document.querySelector('.gallery');
     //<img class="img id-1" src="img/gallery/1.jpg" onclick="onImageGallery(this)" />
-    let strHTML = memeImgs
+    let strHTML = data
         .map(function (memeImg) {
             return `<img class="img id-${memeImg.id}" src="img/gallery/${memeImg.name}" onclick="onImageGallery('${memeImg.name}',${memeImg.id})" />`;
         })
@@ -39,5 +39,6 @@ function loadImage(imgName) {
     img.onload = () => {
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height); //img,x,y,xend,yend
     };
-    
 }
+
+
