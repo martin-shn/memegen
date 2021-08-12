@@ -21,6 +21,10 @@
                 </ul>
             </nav>
         </header>
+        <div class="memes hidden">
+            
+            <!-- ALL LOADED MEMES -->
+        </div>
         <div class="search-container">
             <input type="text" oninput="onSearchKeywords(this.value)" placeholder="Enter search keyword" />
             <div class="search-tags">
@@ -75,9 +79,9 @@
                 <div class="tools-row4 flex">
                     <img src="img/ICONS/back-svgrepo-com.svg" onclick="onLeftSticker()" />
                     <div class="stickers">
-                        <img src="img/ICONS/stickers/S1.png" onclick="onSticker(this)" />
-                        <img src="img/ICONS/stickers/S2.png" onclick="onSticker(this)" />
-                        <img src="img/ICONS/stickers/S3.png" onclick="onSticker(this)" />
+                        <img src="img/ICONS/stickers/S1.png" onclick="onSticker(0)" />
+                        <img src="img/ICONS/stickers/S2.png" onclick="onSticker(1)" />
+                        <img src="img/ICONS/stickers/S3.png" onclick="onSticker(2)" />
                     </div>
                     <img src="img/ICONS/move-to-the-next-page-symbol-svgrepo-com.svg" onclick="onRightSticker()" />
                 </div>

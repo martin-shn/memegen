@@ -76,6 +76,21 @@ header nav ul li a:hover {
     border-bottom: 2px solid #040a2c;
 }
 
+/* MEMES */
+.memes {
+    display: flex;
+    gap:10px;
+    padding: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.memes img {
+    height: 60px;
+    width: 60px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
 /* SEARCH */
 .search-container {
     display: flex;

@@ -1,5 +1,7 @@
 'use strict';
 
+let gStickers = ['img/ICONS/stickers/S1.png','img/ICONS/stickers/S2.png','img/ICONS/stickers/S3.png'];
+
 function addText(currTextLine, txt) {
     gMeme.lines[currTextLine].txt = txt;
 }
@@ -20,14 +22,30 @@ function moveText(dx, dy) {
 }
 
 function findTextClicked(pos) {
-    for (var i = 0; i<gMeme.lines.length; i++) {
-        if (isTextClicked(pos,gMeme.lines[i].area)) return i;
+    for (var i = 0; i < gMeme.lines.length; i++) {
+        if (isTextClicked(pos, gMeme.lines[i].area)) return i;
     }
     return -1;
 }
 
-function loadMeme(id){
+function loadMeme(id) {
+    onMemes();
+    if (!document.querySelector('.gallery').classList.contains('hidden')) switchDisplay();
     let storageMemes = loadFromStorage('userMemes');
-    gMeme=storageMemes[id];
+    gMeme = storageMemes[id];
+    currTextLine = gMeme.selectedLineIdx;
+    document.querySelector('.meme-text').value=gMeme.lines[currTextLine].txt;
     renderCanvas();
 }
+
+function createMemesMenu() {
+    let storageMemes = loadFromStorage('userMemes');
+    let strHTML = storageMemes
+        .map(function (meme, idx) {
+            return `<img src="${meme.thumbnail}" onclick="loadMeme(${idx})">`;
+        })
+        .join('');
+    document.querySelector('.memes').innerHTML = strHTML;
+}
+
+
