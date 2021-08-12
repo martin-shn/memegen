@@ -35,7 +35,7 @@ function loadMeme(id) {
     let storageMemes = loadFromStorage('userMemes');
     gMeme = storageMemes[id];
     currTextLine = gMeme.selectedLineIdx;
-    document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
+    if (gMeme.lines[currTextLine].txt) document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
     renderCanvas();
 }
 
@@ -63,10 +63,7 @@ function setTextSize(isChangeTextSize) {
 
 function isClickedOnHandle(clickedPos) {
     let area = gMeme.lines[currTextLine].area;
-    console.log(`${clickedPos.x} > ${area.startX + area.dx - 11} && ${clickedPos.x} < ${area.startX + area.dx} && ${clickedPos.y} < ${area.startY} && ${clickedPos.y} > ${area.startY - 11}`);
-    console.log(area);
     if (clickedPos.x > area.startX + area.dx - 11 && clickedPos.x < area.startX + area.dx && clickedPos.y < area.startY && clickedPos.y > area.startY - 11) {
-        console.log('resize');
         return true;
     }
     return false;
