@@ -100,6 +100,7 @@ function onGallery(el) {
 
 function onMemes() {
     document.querySelector('.memes').classList.toggle('hidden');
+    if (document.querySelector('nav').classList.contains('shown')) onOpenMenu();
 }
 
 function onImageGallery(imgName, imgId) {
@@ -301,15 +302,15 @@ function onMove(ev) {
         gLastPos = pos;
         renderCanvas();
     }
-    if(gIsChangeTextSize){
+    if (gIsChangeTextSize) {
         const pos = getEvPos(ev);
         const dx = pos.x - gLastPos.x;
         const dy = pos.y - gLastPos.y;
-        gMeme.lines[currTextLine].area.dx+=dx;
-        gMeme.lines[currTextLine].stickerDX+=dx;
-        gMeme.lines[currTextLine].area.dy+=dy;
-        gMeme.lines[currTextLine].stickerDY+=dy;
-        if(gMeme.lines[currTextLine].size>1||gMeme.lines[currTextLine].size+dx>1) gMeme.lines[currTextLine].size+=dx;
+        gMeme.lines[currTextLine].area.dx += dx;
+        gMeme.lines[currTextLine].stickerDX += dx;
+        gMeme.lines[currTextLine].area.dy += dy;
+        gMeme.lines[currTextLine].stickerDY += dy;
+        if (gMeme.lines[currTextLine].size > 1 || gMeme.lines[currTextLine].size + dx > 1) gMeme.lines[currTextLine].size += dx;
         gLastPos = pos;
         renderCanvas();
     }
