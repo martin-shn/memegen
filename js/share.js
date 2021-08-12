@@ -15,6 +15,11 @@ function downloadMeme() {
 
 //share to facebook
 function shareImg() {
+    try {
+        var img = gElCanvas.toDataURL('image/jpeg', 0.9).split(',')[1];
+    } catch (e) {
+        var img = gElCanvas.toDataURL().split(',')[1];
+    }
     const imgDataUrl = gElCanvas.toDataURL('image/jpeg');
 
     // A function to be called if request succeeds
@@ -33,7 +38,7 @@ function shareImg() {
         else window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}`, '_blank');
     }
     // doUploadImg(imgDataUrl, onSuccess);
-    imgurUpload(imgDataUrl, onSuccess);
+    imgurUpload(img, onSuccess);
     renderCanvas();
 }
 
@@ -57,7 +62,7 @@ function doUploadImg(imgDataUrl, onSuccess) {
 
 function imgurUpload(imgDataUrl, onSuccess) {
     var myHeaders = new Headers();
-    myHeaders.append('Authorization', 'Client-ID {f64b0059ce0e166}');
+    myHeaders.append('Authorization', 'Client-ID f64b0059ce0e166');
 
     var formdata = new FormData();
     formdata.append('image', imgDataUrl);
@@ -71,6 +76,9 @@ function imgurUpload(imgDataUrl, onSuccess) {
 
     fetch('https://api.imgur.com/3/image', requestOptions)
         .then((response) => response.text())
-        .then((result) => onSuccess(result))
+        .then(function (result) {
+            console.log(JSON.parse(result));
+            onSuccess(JSON.parse(result).data.link);
+        })
         .catch((error) => console.log('error', error));
 }
