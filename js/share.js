@@ -57,7 +57,7 @@ function doUploadImg(imgDataUrl, onSuccess) {
 
 function imgurUpload(imgDataUrl, onSuccess) {
     var myHeaders = new Headers();
-    myHeaders.append('Authorization', 'Client-ID {{clientId}}');
+    myHeaders.append('Authorization', 'Client-ID {f64b0059ce0e166}');
 
     var formdata = new FormData();
     formdata.append('image', imgDataUrl);
