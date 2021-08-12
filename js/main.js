@@ -291,7 +291,7 @@ function onMove(ev) {
 
 function onUp(ev) {
     setTextDrag(false);
-    document.body.style.cursor = 'grab';
+    document.body.style.cursor = 'default';
 }
 
 function getEvPos(ev) {
