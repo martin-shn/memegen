@@ -1,6 +1,6 @@
 'use strict';
 
-let gStickers = ['img/ICONS/stickers/S1.png','img/ICONS/stickers/S2.png','img/ICONS/stickers/S3.png'];
+let gStickers = ['img/ICONS/stickers/S1.png', 'img/ICONS/stickers/S2.png', 'img/ICONS/stickers/S3.png'];
 
 function addText(currTextLine, txt) {
     gMeme.lines[currTextLine].txt = txt;
@@ -34,12 +34,13 @@ function loadMeme(id) {
     let storageMemes = loadFromStorage('userMemes');
     gMeme = storageMemes[id];
     currTextLine = gMeme.selectedLineIdx;
-    document.querySelector('.meme-text').value=gMeme.lines[currTextLine].txt;
+    document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
     renderCanvas();
 }
 
 function createMemesMenu() {
     let storageMemes = loadFromStorage('userMemes');
+    if (!storageMemes) return;
     let strHTML = storageMemes
         .map(function (meme, idx) {
             return `<img src="${meme.thumbnail}" onclick="loadMeme(${idx})">`;
@@ -47,5 +48,3 @@ function createMemesMenu() {
         .join('');
     document.querySelector('.memes').innerHTML = strHTML;
 }
-
-

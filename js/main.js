@@ -255,7 +255,7 @@ function addTouchListeners() {
 }
 
 function onClick(ev) {
-    ev.preventDefault();
+    // ev.preventDefault();
     const pos = getEvPos(ev);
     // if (!isTextClicked(pos, currArea)) return;
     let clickedLine = findTextClicked(pos);
