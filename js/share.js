@@ -32,7 +32,8 @@ function shareImg() {
         if (isMobile) window.location.assign(`https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}`, '_blank');
         else window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}`, '_blank');
     }
-    doUploadImg(imgDataUrl, onSuccess);
+    // doUploadImg(imgDataUrl, onSuccess);
+    imgurUpload(imgDataUrl, onSuccess);
     renderCanvas();
 }
 
@@ -52,4 +53,24 @@ function doUploadImg(imgDataUrl, onSuccess) {
         .catch((err) => {
             console.error(err);
         });
+}
+
+function imgurUpload(imgDataUrl, onSuccess) {
+    var myHeaders = new Headers();
+    myHeaders.append('Authorization', 'Client-ID {{clientId}}');
+
+    var formdata = new FormData();
+    formdata.append('image', imgDataUrl);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow',
+    };
+
+    fetch('https://api.imgur.com/3/image', requestOptions)
+        .then((response) => response.text())
+        .then((result) => onSuccess(result))
+        .catch((error) => console.log('error', error));
 }
