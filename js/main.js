@@ -57,6 +57,7 @@ function renderCanvas(isOutline = true) {
                 currArea = { startX: gMeme.lines[currTextLine].x - 5, startY: gMeme.lines[currTextLine].y + gMeme.lines[currTextLine].stickerDY + 5, dx: gMeme.lines[currTextLine].stickerDX + 10, dy: 0 - gMeme.lines[currTextLine].stickerDY - 10 };
                 gMeme.lines[currTextLine].area = currArea;
                 gCtx.stroke();
+                addHandle();
                 return;
             }
             if (!gMeme.lines[currTextLine].txt) return;
@@ -80,6 +81,7 @@ function renderCanvas(isOutline = true) {
             }
             gCtx.stroke();
             gMeme.lines[currTextLine].area = currArea;
+            addHandle();
         }
     };
     // loadImage(gMeme.selectedImgName);
@@ -184,13 +186,23 @@ function onDeleteText() {
 }
 
 function onIncFont() {
-    // if (gMeme.lines[currTextLine].size > 30) return;
-    gMeme.lines[currTextLine].size++;
+    if ('sticker' in gMeme.lines[currTextLine]) {
+        gMeme.lines[currTextLine].stickerDX++;
+        gMeme.lines[currTextLine].stickerDY++;
+    } else {
+        gMeme.lines[currTextLine].size++;
+    }
     renderCanvas();
 }
 function onDecFont() {
-    if (gMeme.lines[currTextLine].size < 1) return;
-    gMeme.lines[currTextLine].size--;
+    if ('sticker' in gMeme.lines[currTextLine]) {
+        if (gMeme.lines[currTextLine].stickerDX < 1 || gMeme.lines[currTextLine].stickerDY < 1) return;
+        gMeme.lines[currTextLine].stickerDX--;
+        gMeme.lines[currTextLine].stickerDY--;
+    } else {
+        if (gMeme.lines[currTextLine].size < 1) return;
+        gMeme.lines[currTextLine].size--;
+    }
     renderCanvas();
 }
 function onAlign(align) {
@@ -269,10 +281,12 @@ function onClick(ev) {
 function onDown(ev) {
     ev.preventDefault();
     const pos = getEvPos(ev);
+    console.log(pos);
     let clickedLine = findTextClicked(pos);
     if (clickedLine >= 0) currTextLine = clickedLine;
     else return;
-    setTextDrag(true);
+    if (isClickedOnHandle(pos)) setTextSize(true);
+    else setTextDrag(true);
     gLastPos = pos;
     document.body.style.cursor = 'grabbing';
 }
@@ -287,10 +301,23 @@ function onMove(ev) {
         gLastPos = pos;
         renderCanvas();
     }
+    if(gIsChangeTextSize){
+        const pos = getEvPos(ev);
+        const dx = pos.x - gLastPos.x;
+        const dy = pos.y - gLastPos.y;
+        gMeme.lines[currTextLine].area.dx+=dx;
+        gMeme.lines[currTextLine].stickerDX+=dx;
+        gMeme.lines[currTextLine].area.dy+=dy;
+        gMeme.lines[currTextLine].stickerDY+=dy;
+        if(gMeme.lines[currTextLine].size>1||gMeme.lines[currTextLine].size+dx>1) gMeme.lines[currTextLine].size+=dx;
+        gLastPos = pos;
+        renderCanvas();
+    }
 }
 
 function onUp(ev) {
     setTextDrag(false);
+    setTextSize(false);
     document.body.style.cursor = 'default';
 }
 
