@@ -294,7 +294,6 @@ function onClick(ev) {
 function onDown(ev) {
     ev.preventDefault();
     const pos = getEvPos(ev);
-    console.log(pos);
     let clickedLine = findTextClicked(pos);
     if (clickedLine >= 0) currTextLine = clickedLine;
     else return;
