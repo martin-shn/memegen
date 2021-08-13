@@ -131,7 +131,11 @@ function onImageGallery(imgName, imgId) {
     ];
 
     switchDisplay();
-    if (document.querySelector('.hamburger-btn').classList.contains('hidden')) document.querySelector('.meme-text').focus();
+    if (!isMobile()) document.querySelector('.meme-text').focus();
+}
+
+function isMobile() {
+    return window.innerWidth <= 500 && window.innerHeight <= 600;
 }
 
 function switchDisplay() {
