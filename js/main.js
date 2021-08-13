@@ -131,7 +131,7 @@ function onImageGallery(imgName, imgId) {
     ];
 
     switchDisplay();
-    document.querySelector('.meme-text').focus();
+    if (document.querySelector('.hamburger-btn').classList.contains('hidden')) document.querySelector('.meme-text').focus();
 }
 
 function switchDisplay() {
