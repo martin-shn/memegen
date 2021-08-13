@@ -185,10 +185,12 @@ function onUpDown() {
     currTextLine++;
     if (currTextLine >= gMeme.lines.length) currTextLine = 0;
     if (!gMeme.lines[currTextLine].txt && !('sticker' in gMeme.lines[currTextLine])) return;
-    document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
-    document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
-    document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
-    document.querySelector('.font').value = gMeme.lines[currTextLine].font;
+    if (!('sticker' in gMeme.lines[currTextLine])) {
+        document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
+        document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
+        document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
+        document.querySelector('.font').value = gMeme.lines[currTextLine].font;
+    } else document.querySelector('.meme-text').value = '';
     renderCanvas();
 }
 
@@ -312,7 +314,6 @@ function onDown(ev) {
     document.querySelector('.font').value = gMeme.lines[currTextLine].font;
     document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
     document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
-    document.querySelector('.meme-text').value = 'testing';
     renderCanvas();
 }
 
