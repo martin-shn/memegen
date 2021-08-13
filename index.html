@@ -15,7 +15,7 @@
             <nav>
                 <button class="hamburger-btn hidden" onclick="onOpenMenu()"></button>
                 <ul>
-                    <li><a onclick="onGallery(this)">Gallery</a></li>
+                    <li><a class="gallery-link" onclick="onGallery()">Gallery</a></li>
                     <li><a onclick="onMemes()">Memes</a></li>
                     <li><a href="#about" onclick="onOpenMenu()">About</a></li>
                 </ul>
@@ -38,7 +38,7 @@
             <img src="img/me.jpg" />
             <div>
                 <h4>Martin Shniedmeser</h4>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas mollitia officia numquam quas dolor totam ipsa iusto laudantium cupiditate ea pariatur quidem nihil, ullam modi maiores deleniti qui beatae! Beatae.</p>
+                <p>let's meme this!</p>
                 <div class="socials">
                     <a href="#"></a>
                     <a href="#"></a>
@@ -69,6 +69,12 @@
                         <option value="Impact" selected>Impact</option>
                         <option value="Lato">Lato</option>
                         <option value="Secular">Secular(hebrew)</option>
+                        <option value="Arial">Arial</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier">Courier</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Tahoma">Tahoma</option>
+                        <option value="Comic Sans MS">Comic Sans MS</option>
                     </select>
                     <input type="color" class="text-stroke" value="#000000" onchange="onStrokeColorSelect(this)" />
                     <img class="icon selectable text-stroke-icon" src="img/ICONS/text stroke.png" onclick="onStrokeColor()" title="Text Stroke" />

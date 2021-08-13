@@ -20,6 +20,9 @@ function onInit() {
     updateTags(5);
     createMemesMenu();
     addListeners();
+    document.querySelector('.memes').addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+    });
 }
 
 function renderCanvas(isOutline = true) {
@@ -27,8 +30,9 @@ function renderCanvas(isOutline = true) {
     var img = new Image();
     img.src = `img/gallery/${gMeme.selectedImgName}`;
     img.onload = () => {
+        let textWidth;
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height); //img,x,y,xend,yend
-        gMeme.lines.forEach(function (line) {
+        gMeme.lines.forEach(function (line, idx) {
             if ('sticker' in line) {
                 // sticker line
                 let sticker = new Image();
@@ -45,6 +49,7 @@ function renderCanvas(isOutline = true) {
                 gCtx.fillText(line.txt, line.x, line.y);
                 gCtx.strokeStyle = line.strokeColor;
                 gCtx.strokeText(line.txt, line.x, line.y);
+                if (idx === currTextLine) textWidth = gCtx.measureText(line.txt).width;
             }
         });
         //draw the outline of the selected text
@@ -63,7 +68,7 @@ function renderCanvas(isOutline = true) {
             if (!gMeme.lines[currTextLine].txt) return;
             gCtx.beginPath();
             gCtx.strokeStyle = '#FF0000';
-            let textWidth = gCtx.measureText(gMeme.lines[currTextLine].txt).width;
+
             let textHeight = gMeme.lines[currTextLine].size;
             switch (gMeme.lines[currTextLine].align) {
                 case 'left':
@@ -93,7 +98,8 @@ function resizeCanvas() {
     gElCanvas.height = elContainer.offsetHeight;
 }
 
-function onGallery(el) {
+function onGallery() {
+    if (!document.querySelector('.gallery').classList.contains('first-show')) return;
     switchDisplay();
     onOpenMenu();
 }
@@ -133,6 +139,10 @@ function switchDisplay() {
     document.querySelector('.search-container').classList.toggle('hidden');
     document.querySelector('.about').classList.toggle('hidden');
     document.querySelector('.gallery').classList.toggle('hidden');
+    document.querySelector('.gallery').classList.add('first-show');
+    if (!document.querySelector('.gallery').classList.contains('hidden')) {
+        document.querySelector('.gallery-link').innerText = 'Editor';
+    } else document.querySelector('.gallery-link').innerText = 'Gallery';
 }
 
 function onUpdateText() {
@@ -224,6 +234,8 @@ function onAlign(align) {
 
 function onSelectFont(font) {
     gMeme.lines[currTextLine].font = font;
+    gCtx.direction = 'ltr';
+    if (font === 'Secular') gCtx.direction = 'rtl';
     renderCanvas();
 }
 function onStrokeColor() {
