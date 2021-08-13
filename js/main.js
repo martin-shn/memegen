@@ -308,6 +308,7 @@ function onDown(ev) {
     document.querySelector('.font').value = gMeme.lines[currTextLine].font;
     document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
     document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
+    document.querySelector('.meme-text').value = 'testing';
     renderCanvas();
 }
 
