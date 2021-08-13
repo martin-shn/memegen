@@ -306,8 +306,8 @@ function onDown(ev) {
     gLastPos = pos;
     document.body.style.cursor = 'grabbing';
     document.querySelector('.font').value = gMeme.lines[currTextLine].font;
-    document.querySelector('.text-stroke-icon').backgroundColor = gMeme.lines[currTextLine].strokeColor;
-    document.querySelector('.text-color-icon').backgroundColor = gMeme.lines[currTextLine].textColor;
+    document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
+    document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
     renderCanvas();
 }
 
