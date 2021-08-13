@@ -415,5 +415,6 @@ function onSticker(stickerId) {
     gMeme.lines[currTextLine].y = gElCanvas.height / 2;
     gMeme.lines[currTextLine].stickerDX = 50;
     gMeme.lines[currTextLine].stickerDY = 50;
+    gMeme.lines[currTextLine].align = 'center';
     renderCanvas();
 }
