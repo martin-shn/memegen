@@ -305,6 +305,9 @@ function onDown(ev) {
     else setTextDrag(true);
     gLastPos = pos;
     document.body.style.cursor = 'grabbing';
+    document.querySelector('.font').value = gMeme.lines[currTextLine].font;
+    document.querySelector('.text-stroke-icon').backgroundColor = gMeme.lines[currTextLine].strokeColor;
+    document.querySelector('.text-color-icon').backgroundColor = gMeme.lines[currTextLine].textColor;
     renderCanvas();
 }
 
