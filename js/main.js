@@ -301,6 +301,7 @@ function onDown(ev) {
     else setTextDrag(true);
     gLastPos = pos;
     document.body.style.cursor = 'grabbing';
+    renderCanvas();
 }
 
 function onMove(ev) {
