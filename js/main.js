@@ -150,7 +150,10 @@ function switchDisplay() {
 }
 
 function onUpdateText() {
-    if ('sticker' in gMeme.lines[currTextLine]) delete gMeme.lines[currTextLine].sticker;
+    if ('sticker' in gMeme.lines[currTextLine]) {
+        delete gMeme.lines[currTextLine].sticker;
+        if (gMeme.lines[currTextLine].align === 'right') gMeme.lines[currTextLine].x = gElCanvas.width - 6;
+    }
     let txt = document.querySelector('.meme-text').value;
     addText(currTextLine, txt);
     renderCanvas();
@@ -181,7 +184,7 @@ function onAddText() {
 function onUpDown() {
     currTextLine++;
     if (currTextLine >= gMeme.lines.length) currTextLine = 0;
-    if (!gMeme.lines[currTextLine].txt) return;
+    if (!gMeme.lines[currTextLine].txt && !('sticker' in gMeme.lines[currTextLine])) return;
     document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
     document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
     document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
@@ -224,13 +227,14 @@ function onAlign(align) {
     gMeme.lines[currTextLine].align = align;
     switch (align) {
         case 'left':
-            gMeme.lines[currTextLine].x = 5;
+            gMeme.lines[currTextLine].x = 6;
             break;
         case 'center':
             gMeme.lines[currTextLine].x = gElCanvas.width / 2;
             break;
         case 'right':
-            gMeme.lines[currTextLine].x = gElCanvas.width - 5;
+            if ('sticker' in gMeme.lines[currTextLine]) gMeme.lines[currTextLine].x = gElCanvas.width - gMeme.lines[currTextLine].stickerDY - 6;
+            else gMeme.lines[currTextLine].x = gElCanvas.width - 6;
             break;
     }
     renderCanvas();
