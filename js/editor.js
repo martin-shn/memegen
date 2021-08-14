@@ -1,8 +1,17 @@
 'use strict';
 let gIsChangeSize;
 let handleSize = 15;
+var gMeme = {};
+
 
 let gStickers = ['img/ICONS/stickers/S1.png', 'img/ICONS/stickers/S2.png', 'img/ICONS/stickers/S3.png'];
+
+function getGMeme(){
+    return gMeme;
+}
+function setGMeme(GMeme){
+    gMeme=GMeme;
+}
 
 function addText(currTextLine, txt) {
     gMeme.lines[currTextLine].txt = txt;

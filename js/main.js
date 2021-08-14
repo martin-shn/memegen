@@ -3,16 +3,17 @@
 var gElCanvas,
     gCtx,
     gIsDown = false,
+    currGMeme,
     currArea;
 
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 
 var currTextLine = 0,
     currPos = {},
-    gMeme = {},
     gLastPos;
 
 function onInit() {
+    currGMeme=getGMeme();
     gElCanvas = document.querySelector('canvas');
     gCtx = gElCanvas.getContext('2d');
     createGallery();
@@ -27,13 +28,13 @@ function onInit() {
 
 function renderCanvas(isOutline = true) {
     // gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
-    if(!gMeme.selectedImgName) return;
+    if(!currGMeme.selectedImgName) return;
     var img = new Image();
-    img.src = `${gMeme.selectedImgName}`;
+    img.src = `${currGMeme.selectedImgName}`;
     img.onload = () => {
         let textWidth;
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height); //img,x,y,xend,yend
-        gMeme.lines.forEach(function (line, idx) {
+        currGMeme.lines.forEach(function (line, idx) {
             if ('sticker' in line) {
                 // sticker line
                 let sticker = new Image();
@@ -55,38 +56,38 @@ function renderCanvas(isOutline = true) {
         });
         //draw the outline of the selected text
         if (isOutline) {
-            if ('sticker' in gMeme.lines[currTextLine]) {
+            if ('sticker' in currGMeme.lines[currTextLine]) {
                 // draw outline for sticker
                 gCtx.beginPath();
                 gCtx.strokeStyle = '#FF0000';
-                gCtx.rect(gMeme.lines[currTextLine].x - 5, gMeme.lines[currTextLine].y - 5, gMeme.lines[currTextLine].stickerDX + 10, gMeme.lines[currTextLine].stickerDY + 10);
-                currArea = { startX: gMeme.lines[currTextLine].x - 5, startY: gMeme.lines[currTextLine].y + gMeme.lines[currTextLine].stickerDY + 5, dx: gMeme.lines[currTextLine].stickerDX + 10, dy: 0 - gMeme.lines[currTextLine].stickerDY - 10 };
-                gMeme.lines[currTextLine].area = currArea;
+                gCtx.rect(currGMeme.lines[currTextLine].x - 5, currGMeme.lines[currTextLine].y - 5, currGMeme.lines[currTextLine].stickerDX + 10, currGMeme.lines[currTextLine].stickerDY + 10);
+                currArea = { startX: currGMeme.lines[currTextLine].x - 5, startY: currGMeme.lines[currTextLine].y + currGMeme.lines[currTextLine].stickerDY + 5, dx: currGMeme.lines[currTextLine].stickerDX + 10, dy: 0 - currGMeme.lines[currTextLine].stickerDY - 10 };
+                currGMeme.lines[currTextLine].area = currArea;
                 gCtx.stroke();
                 addHandle();
                 return;
             }
-            if (!gMeme.lines[currTextLine].txt) return;
+            if (!currGMeme.lines[currTextLine].txt) return;
             gCtx.beginPath();
             gCtx.strokeStyle = '#FF0000';
 
-            let textHeight = gMeme.lines[currTextLine].size;
-            switch (gMeme.lines[currTextLine].align) {
+            let textHeight = currGMeme.lines[currTextLine].size;
+            switch (currGMeme.lines[currTextLine].align) {
                 case 'left':
-                    gCtx.rect(0, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                    currArea = { startX: 0, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    gCtx.rect(0, currGMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    currArea = { startX: 0, startY: currGMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
                     break;
                 case 'center':
-                    gCtx.rect(gMeme.lines[currTextLine].x - textWidth / 2 - 5, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                    currArea = { startX: gMeme.lines[currTextLine].x - textWidth / 2 - 5, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    gCtx.rect(currGMeme.lines[currTextLine].x - textWidth / 2 - 5, currGMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    currArea = { startX: currGMeme.lines[currTextLine].x - textWidth / 2 - 5, startY: currGMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
                     break;
                 case 'right':
-                    gCtx.rect(gElCanvas.width - textWidth - 10, gMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                    currArea = { startX: gElCanvas.width - textWidth - 10, startY: gMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    gCtx.rect(gElCanvas.width - textWidth - 10, currGMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    currArea = { startX: gElCanvas.width - textWidth - 10, startY: currGMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
                     break;
             }
             gCtx.stroke();
-            gMeme.lines[currTextLine].area = currArea;
+            currGMeme.lines[currTextLine].area = currArea;
             addHandle();
         }
     };
@@ -137,12 +138,12 @@ function onImageGallery(imgName, imgId,isUpload=false) {
     if(!isUpload) loadImage(imgName);
     currTextLine = 0;
     currPos = {};
-    gMeme = {};
+    currGMeme = {};
     document.querySelector('.meme-text').value = '';
-    gMeme.selectedImgId = imgId;
-    gMeme.selectedImgName = imgName;
-    gMeme.selectedLineIdx = 0;
-    gMeme.lines = [
+    currGMeme.selectedImgId = imgId;
+    currGMeme.selectedImgName = imgName;
+    currGMeme.selectedLineIdx = 0;
+    currGMeme.lines = [
         {
             size: 20,
             align: 'center',
@@ -153,6 +154,7 @@ function onImageGallery(imgName, imgId,isUpload=false) {
             y: 30,
         },
     ];
+    setGMeme(currGMeme);
 
     switchDisplay();
     if (!isMobile()) document.querySelector('.meme-text').focus();
@@ -175,9 +177,9 @@ function switchDisplay() {
 }
 
 function onUpdateText() {
-    if ('sticker' in gMeme.lines[currTextLine]) {
-        delete gMeme.lines[currTextLine].sticker;
-        if (gMeme.lines[currTextLine].align === 'right') gMeme.lines[currTextLine].x = gElCanvas.width - 6;
+    if ('sticker' in currGMeme.lines[currTextLine]) {
+        delete currGMeme.lines[currTextLine].sticker;
+        if (currGMeme.lines[currTextLine].align === 'right') currGMeme.lines[currTextLine].x = gElCanvas.width - 6;
     }
     let txt = document.querySelector('.meme-text').value;
     addText(currTextLine, txt);
@@ -186,42 +188,42 @@ function onUpdateText() {
 
 function onAddText() {
     document.querySelector('.meme-text').value = '';
-    gMeme.lines.push({
+    currGMeme.lines.push({
         size: 20,
         align: 'center',
         textColor: '#FFFFFF',
         strokeColor: '#000000',
         font: document.querySelector('.font').value,
     });
-    currTextLine = gMeme.lines.length - 1;
+    currTextLine = currGMeme.lines.length - 1;
 
     if (currTextLine === 0) currPos = { x: gElCanvas.width / 2, y: 30 };
     else if (currTextLine === 1) currPos = { x: gElCanvas.width / 2, y: gElCanvas.height - 30 };
     else currPos = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
-    gMeme.lines[currTextLine].x = currPos.x;
-    gMeme.lines[currTextLine].y = currPos.y;
-    document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
-    document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
+    currGMeme.lines[currTextLine].x = currPos.x;
+    currGMeme.lines[currTextLine].y = currPos.y;
+    document.querySelector('.text-stroke-icon').style.backgroundColor = currGMeme.lines[currTextLine].strokeColor;
+    document.querySelector('.text-color-icon').style.backgroundColor = currGMeme.lines[currTextLine].textColor;
     renderCanvas();
     document.querySelector('.meme-text').focus();
 }
 
 function onUpDown() {
     currTextLine++;
-    if (currTextLine >= gMeme.lines.length) currTextLine = 0;
-    if (!gMeme.lines[currTextLine].txt && !('sticker' in gMeme.lines[currTextLine])) return;
-    if (!('sticker' in gMeme.lines[currTextLine])) {
-        document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
-        document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
-        document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
-        document.querySelector('.font').value = gMeme.lines[currTextLine].font;
+    if (currTextLine >= currGMeme.lines.length) currTextLine = 0;
+    if (!currGMeme.lines[currTextLine].txt && !('sticker' in currGMeme.lines[currTextLine])) return;
+    if (!('sticker' in currGMeme.lines[currTextLine])) {
+        document.querySelector('.meme-text').value = currGMeme.lines[currTextLine].txt;
+        document.querySelector('.text-stroke-icon').style.backgroundColor = currGMeme.lines[currTextLine].strokeColor;
+        document.querySelector('.text-color-icon').style.backgroundColor = currGMeme.lines[currTextLine].textColor;
+        document.querySelector('.font').value = currGMeme.lines[currTextLine].font;
     } else document.querySelector('.meme-text').value = '';
     renderCanvas();
 }
 
 function onDeleteText() {
-    gMeme.lines.splice(currTextLine, 1);
-    if (gMeme.lines.length === 0) {
+    currGMeme.lines.splice(currTextLine, 1);
+    if (currGMeme.lines.length === 0) {
         onAddText();
         return;
     }
@@ -231,44 +233,44 @@ function onDeleteText() {
 }
 
 function onIncFont() {
-    if ('sticker' in gMeme.lines[currTextLine]) {
-        gMeme.lines[currTextLine].stickerDX++;
-        gMeme.lines[currTextLine].stickerDY++;
+    if ('sticker' in currGMeme.lines[currTextLine]) {
+        currGMeme.lines[currTextLine].stickerDX++;
+        currGMeme.lines[currTextLine].stickerDY++;
     } else {
-        gMeme.lines[currTextLine].size++;
+        currGMeme.lines[currTextLine].size++;
     }
     renderCanvas();
 }
 function onDecFont() {
-    if ('sticker' in gMeme.lines[currTextLine]) {
-        if (gMeme.lines[currTextLine].stickerDX < 1 || gMeme.lines[currTextLine].stickerDY < 1) return;
-        gMeme.lines[currTextLine].stickerDX--;
-        gMeme.lines[currTextLine].stickerDY--;
+    if ('sticker' in currGMeme.lines[currTextLine]) {
+        if (currGMeme.lines[currTextLine].stickerDX < 1 || currGMeme.lines[currTextLine].stickerDY < 1) return;
+        currGMeme.lines[currTextLine].stickerDX--;
+        currGMeme.lines[currTextLine].stickerDY--;
     } else {
-        if (gMeme.lines[currTextLine].size < 1) return;
-        gMeme.lines[currTextLine].size--;
+        if (currGMeme.lines[currTextLine].size < 1) return;
+        currGMeme.lines[currTextLine].size--;
     }
     renderCanvas();
 }
 function onAlign(align) {
-    gMeme.lines[currTextLine].align = align;
+    currGMeme.lines[currTextLine].align = align;
     switch (align) {
         case 'left':
-            gMeme.lines[currTextLine].x = 6;
+            currGMeme.lines[currTextLine].x = 6;
             break;
         case 'center':
-            gMeme.lines[currTextLine].x = gElCanvas.width / 2;
+            currGMeme.lines[currTextLine].x = gElCanvas.width / 2;
             break;
         case 'right':
-            if ('sticker' in gMeme.lines[currTextLine]) gMeme.lines[currTextLine].x = gElCanvas.width - gMeme.lines[currTextLine].stickerDY - 6;
-            else gMeme.lines[currTextLine].x = gElCanvas.width - 6;
+            if ('sticker' in currGMeme.lines[currTextLine]) currGMeme.lines[currTextLine].x = gElCanvas.width - currGMeme.lines[currTextLine].stickerDY - 6;
+            else currGMeme.lines[currTextLine].x = gElCanvas.width - 6;
             break;
     }
     renderCanvas();
 }
 
 function onSelectFont(font) {
-    gMeme.lines[currTextLine].font = font;
+    currGMeme.lines[currTextLine].font = font;
     gCtx.direction = 'ltr';
     if (font === 'Secular') gCtx.direction = 'rtl';
     renderCanvas();
@@ -282,12 +284,12 @@ function onFontColor() {
 
 function onStrokeColorSelect(el) {
     document.querySelector('.text-stroke-icon').style.backgroundColor = el.value;
-    gMeme.lines[currTextLine].strokeColor = el.value;
+    currGMeme.lines[currTextLine].strokeColor = el.value;
     renderCanvas();
 }
 function onFontColorSelect(el) {
     document.querySelector('.text-color-icon').style.backgroundColor = el.value;
-    gMeme.lines[currTextLine].textColor = el.value;
+    currGMeme.lines[currTextLine].textColor = el.value;
     renderCanvas();
 }
 
@@ -335,14 +337,14 @@ function onDown(ev) {
     if (isClickedOnHandle(pos)) setTextSize(true);
     else setTextDrag(true);
     gLastPos = pos;
-    if (gMeme.lines[currTextLine].align !== 'center') {
-        gMeme.lines[currTextLine].x = pos.x;
-        gMeme.lines[currTextLine].align = 'center';
+    if (currGMeme.lines[currTextLine].align !== 'center') {
+        currGMeme.lines[currTextLine].x = pos.x;
+        currGMeme.lines[currTextLine].align = 'center';
     }
     document.body.style.cursor = 'grabbing';
-    document.querySelector('.font').value = gMeme.lines[currTextLine].font;
-    document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
-    document.querySelector('.text-color-icon').style.backgroundColor = gMeme.lines[currTextLine].textColor;
+    document.querySelector('.font').value = currGMeme.lines[currTextLine].font;
+    document.querySelector('.text-stroke-icon').style.backgroundColor = currGMeme.lines[currTextLine].strokeColor;
+    document.querySelector('.text-color-icon').style.backgroundColor = currGMeme.lines[currTextLine].textColor;
     renderCanvas();
 }
 
@@ -360,11 +362,11 @@ function onMove(ev) {
         const pos = getEvPos(ev);
         const dx = pos.x - gLastPos.x;
         const dy = pos.y - gLastPos.y;
-        gMeme.lines[currTextLine].area.dx += dx;
-        gMeme.lines[currTextLine].stickerDX += dx;
-        gMeme.lines[currTextLine].area.dy += dy;
-        gMeme.lines[currTextLine].stickerDY += dy;
-        if (gMeme.lines[currTextLine].size > 1 || gMeme.lines[currTextLine].size + dx > 1) gMeme.lines[currTextLine].size += dx;
+        currGMeme.lines[currTextLine].area.dx += dx;
+        currGMeme.lines[currTextLine].stickerDX += dx;
+        currGMeme.lines[currTextLine].area.dy += dy;
+        currGMeme.lines[currTextLine].stickerDY += dy;
+        if (currGMeme.lines[currTextLine].size > 1 || currGMeme.lines[currTextLine].size + dx > 1) currGMeme.lines[currTextLine].size += dx;
         gLastPos = pos;
         renderCanvas();
     }
@@ -403,15 +405,15 @@ function onDownload() {
 }
 
 function onSave() {
-    gMeme.selectedLineIdx = currTextLine;
-    gMeme.thumbnail = gElCanvas.toDataURL('image/jpeg', 0.1);
+    currGMeme.selectedLineIdx = currTextLine;
+    currGMeme.thumbnail = gElCanvas.toDataURL('image/jpeg', 0.1);
     let userMemes = loadFromStorage('userMemes');
     if (userMemes) {
         // add to storage
-        userMemes.push(gMeme);
+        userMemes.push(currGMeme);
     } else {
         // create first storage
-        userMemes = [gMeme];
+        userMemes = [currGMeme];
     }
     saveToStorage('userMemes', userMemes);
     createMemesMenu();
@@ -439,13 +441,13 @@ function onSearchKeywords(searchText) {
 
 function onSticker(stickerId) {
     document.querySelector('.meme-text').value = '';
-    delete gMeme.lines[currTextLine].txt;
-    gMeme.lines[currTextLine].sticker = stickerId;
-    gMeme.lines[currTextLine].x = gElCanvas.width / 2;
-    gMeme.lines[currTextLine].y = gElCanvas.height / 2;
-    gMeme.lines[currTextLine].stickerDX = 50;
-    gMeme.lines[currTextLine].stickerDY = 50;
-    gMeme.lines[currTextLine].align = 'center';
+    delete currGMeme.lines[currTextLine].txt;
+    currGMeme.lines[currTextLine].sticker = stickerId;
+    currGMeme.lines[currTextLine].x = gElCanvas.width / 2;
+    currGMeme.lines[currTextLine].y = gElCanvas.height / 2;
+    currGMeme.lines[currTextLine].stickerDX = 50;
+    currGMeme.lines[currTextLine].stickerDY = 50;
+    currGMeme.lines[currTextLine].align = 'center';
     renderCanvas();
 }
 
