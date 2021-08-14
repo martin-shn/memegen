@@ -347,6 +347,7 @@ function onDown(ev) {
     document.querySelector('.font').value = currGMeme.lines[currTextLine].font;
     document.querySelector('.text-stroke-icon').style.backgroundColor = currGMeme.lines[currTextLine].strokeColor;
     document.querySelector('.text-color-icon').style.backgroundColor = currGMeme.lines[currTextLine].textColor;
+    document.querySelector('.meme-text').value = currGMeme.lines[currTextLine].txt;
     renderCanvas();
 }
 
