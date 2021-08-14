@@ -37,6 +37,12 @@ function loadMeme(id) {
     gMeme = storageMemes[id];
     currTextLine = gMeme.selectedLineIdx;
     if (gMeme.lines[currTextLine].txt) document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
+    else document.querySelector('.meme-text').value='';
+    var img = new Image();
+    img.src = `${gMeme.selectedImgName}`;
+    img.onload = function () {
+        resizeCanvas(this.width, this.height);
+    }
     renderCanvas();
 }
 

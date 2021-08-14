@@ -27,6 +27,7 @@ function onInit() {
 
 function renderCanvas(isOutline = true) {
     // gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
+    if(!gMeme.selectedImgName) return;
     var img = new Image();
     img.src = `${gMeme.selectedImgName}`;
     img.onload = () => {
@@ -127,6 +128,7 @@ function onGallery() {
 }
 
 function onMemes() {
+    if (document.querySelector('.memes').childElementCount===0) return;
     document.querySelector('.memes').classList.toggle('hidden');
     if (document.querySelector('nav').classList.contains('shown')) onOpenMenu();
 }
@@ -449,4 +451,9 @@ function onSticker(stickerId) {
 
 function onUpload(){
     document.querySelector('.upload-file').click();
+}
+
+function onClearSearch(){
+    document.querySelector('.search-container input').value='';
+    onSearchKeywords('');
 }

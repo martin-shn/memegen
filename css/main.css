@@ -103,6 +103,12 @@ header nav ul li a:hover {
 .search-container.more .search-tags {
     flex-wrap: wrap;
 }
+.search-container .clear::before{
+    font-family: Icons;
+    content: '\f00d';
+    font-style: normal;
+    cursor: pointer;
+}
 .search-container input::placeholder {
     color: #7a7a7a;
 }
@@ -445,18 +451,22 @@ footer small {
     .search-container {
         display: grid;
         grid-template-areas:
-            'search search'
-            'tags more';
+            'clear search search'
+            'tags tags more';
         grid-template-rows: 20px 1fr;
-        grid-template-columns: 1fr 50px;
+        grid-template-columns: 1fr 1fr 50px;
 
         padding: 0;
         margin: 10px 0;
         height: 60px;
     }
+    .search-container .clear{
+        grid-area: clear;
+        justify-self: right;
+    }
     .search-container input {
         grid-area: search;
-        justify-self: center;
+        justify-self: left;
     }
     .search-tags {
         grid-area: tags;
