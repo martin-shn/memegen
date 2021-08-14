@@ -28,6 +28,7 @@ function onInit() {
 
 function renderCanvas(isOutline = true) {
     // gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
+    currGMeme=getGMeme();
     if(!currGMeme.selectedImgName) return;
     var img = new Image();
     img.src = `${currGMeme.selectedImgName}`;
