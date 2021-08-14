@@ -42,24 +42,43 @@ let memeImgs = [
 
 function createGallery(data = memeImgs) {
     memeImgs.forEach(function (meme) {
-        meme.name = meme.id + '.jpg';
+        meme.name = 'img/gallery/'+meme.id + '.jpg';
     });
     var elGallery = document.querySelector('.gallery');
     //<img class="img id-1" src="img/gallery/1.jpg" onclick="onImageGallery(this)" />
     let strHTML = data
         .map(function (memeImg) {
-            return `<img class="img id-${memeImg.id}" src="img/gallery/${memeImg.name}" onclick="onImageGallery('${memeImg.name}',${memeImg.id})" />`;
+            return `<img class="img id-${memeImg.id}" src="${memeImg.name}" onclick="onImageGallery('${memeImg.name}',${memeImg.id})" />`;
         })
         .join('');
-    elGallery.innerHTML = strHTML;
+    elGallery.innerHTML = `<img class="img" src="img/upload.png" onclick="onUpload()" title="Upload your own image">` + strHTML;
 }
 
 function loadImage(imgName) {
     // console.log(imgId);
     var img = new Image();
-    img.src = `img/gallery/${imgName}`;
-    img.onload = function() {
+    img.src = `${imgName}`;
+    img.onload = function () {
         resizeCanvas(this.width, this.height);
-        gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height); //img,x,y,xend,yend
+        gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
     };
+}
+
+function uploadImg(elFile) {
+    var img = new Image();
+    img.src = URL.createObjectURL(elFile.files[0]);
+    img.onload = function () {
+        resizeCanvas(this.width, this.height);
+        gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
+    };
+    onImageGallery(img.src, makeId(),true)
+}
+
+function makeId(length = 6) {
+    var txt = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < length; i++) {
+        txt += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return txt;
 }

@@ -28,7 +28,7 @@ function onInit() {
 function renderCanvas(isOutline = true) {
     // gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
     var img = new Image();
-    img.src = `img/gallery/${gMeme.selectedImgName}`;
+    img.src = `${gMeme.selectedImgName}`;
     img.onload = () => {
         let textWidth;
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height); //img,x,y,xend,yend
@@ -131,8 +131,8 @@ function onMemes() {
     if (document.querySelector('nav').classList.contains('shown')) onOpenMenu();
 }
 
-function onImageGallery(imgName, imgId) {
-    loadImage(imgName);
+function onImageGallery(imgName, imgId,isUpload=false) {
+    if(!isUpload) loadImage(imgName);
     currTextLine = 0;
     currPos = {};
     gMeme = {};
@@ -445,4 +445,8 @@ function onSticker(stickerId) {
     gMeme.lines[currTextLine].stickerDY = 50;
     gMeme.lines[currTextLine].align = 'center';
     renderCanvas();
+}
+
+function onUpload(){
+    document.querySelector('.upload-file').click();
 }
