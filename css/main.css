@@ -78,7 +78,7 @@ header nav ul li a:hover {
 /* MEMES */
 .memes {
     display: flex;
-    gap:10px;
+    gap: 10px;
     padding: 10px;
     width: 100%;
     flex-wrap: wrap;
@@ -103,7 +103,7 @@ header nav ul li a:hover {
 .search-container.more .search-tags {
     flex-wrap: wrap;
 }
-.search-container .clear::before{
+.search-container .clear::before {
     font-family: Icons;
     content: '\f00d';
     font-style: normal;
@@ -371,17 +371,17 @@ footer small {
     display: none;
 }
 
-@media (max-width:800px){
-    .meme-text{
+@media (max-width: 800px) {
+    .meme-text {
         height: 1.5rem;
     }
-    .icon{
+    .icon {
         height: 30px;
         width: 30px;
     }
-    .tools-row5 button{
+    .tools-row5 button {
         height: 2rem;
-        min-width:unset;
+        min-width: unset;
     }
 }
 @media (max-width: 500px) {
@@ -389,16 +389,16 @@ footer small {
         background-color: #ff7f00;
         height: 0;
         /* position: absolute; */
-        top: 32px;
+        top: 7vh;
         left: 0;
         width: 100%;
     }
     header nav.shown {
         position: absolute;
-        top: 32px;
+        top: 7vh;
         left: 0;
         width: 100%;
-        height: 100px;
+        height: 140px;
         transition: height 1s;
     }
     header nav.shown ul {
@@ -460,7 +460,7 @@ footer small {
         margin: 10px 0;
         height: 60px;
     }
-    .search-container .clear{
+    .search-container .clear {
         grid-area: clear;
         justify-self: right;
     }
@@ -488,8 +488,8 @@ footer small {
         padding: 5px 5px;
     }
     .gallery img {
-        width: 80px;
-        height: 80px;
+        width: 28vw;
+        height: 28vw;
         margin: 2px;
     }
     .about {
@@ -527,20 +527,20 @@ footer small {
     .tools {
         margin-top: 10px;
     }
-    .tools >div{
+    .tools > div {
         margin-top: 10px;
     }
-    .icon{
+    .icon {
         width: 35px;
         height: 35px;
     }
-    .tools .meme-text{
+    .tools .meme-text {
         height: 2rem;
     }
-    .tools-row4{
+    .tools-row4 {
         padding: 4px 4px;
     }
-    .tools-row5 button{
+    .tools-row5 button {
         min-width: 50px;
     }
 }
