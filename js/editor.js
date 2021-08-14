@@ -1,5 +1,5 @@
 'use strict';
-let gIsChangeTextSize;
+let gIsChangeSize;
 let handleSize = 15;
 
 let gStickers = ['img/ICONS/stickers/S1.png', 'img/ICONS/stickers/S2.png', 'img/ICONS/stickers/S3.png'];
@@ -67,7 +67,7 @@ function addHandle() {
 }
 
 function setTextSize(isChangeTextSize) {
-    gIsChangeTextSize = isChangeTextSize;
+    gIsChangeSize = isChangeTextSize;
 }
 
 function isClickedOnHandle(clickedPos) {

@@ -202,7 +202,7 @@ function onDeleteText() {
     }
     onUpDown();
     renderCanvas();
-    document.querySelector('.meme-text').focus();
+    if (!isMobile()) document.querySelector('.meme-text').focus();
 }
 
 function onIncFont() {
@@ -310,6 +310,10 @@ function onDown(ev) {
     if (isClickedOnHandle(pos)) setTextSize(true);
     else setTextDrag(true);
     gLastPos = pos;
+    if (gMeme.lines[currTextLine].align !== 'center') {
+        gMeme.lines[currTextLine].x = pos.x;
+        gMeme.lines[currTextLine].align = 'center';
+    }
     document.body.style.cursor = 'grabbing';
     document.querySelector('.font').value = gMeme.lines[currTextLine].font;
     document.querySelector('.text-stroke-icon').style.backgroundColor = gMeme.lines[currTextLine].strokeColor;
@@ -327,7 +331,7 @@ function onMove(ev) {
         gLastPos = pos;
         renderCanvas();
     }
-    if (gIsChangeTextSize) {
+    if (gIsChangeSize) {
         const pos = getEvPos(ev);
         const dx = pos.x - gLastPos.x;
         const dy = pos.y - gLastPos.y;
