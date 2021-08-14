@@ -463,10 +463,12 @@ footer small {
     .search-container .clear {
         grid-area: clear;
         justify-self: right;
+        transform: translateX(-1rem);
     }
     .search-container input {
         grid-area: search;
         justify-self: left;
+        transform: translateX(-1rem);
     }
     .search-tags {
         grid-area: tags;
