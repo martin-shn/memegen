@@ -92,10 +92,32 @@ function renderCanvas(isOutline = true) {
     // loadImage(gMeme.selectedImgName);
 }
 
-function resizeCanvas() {
+function resizeCanvas(imgW,imgH) {
+    var elTools = document.querySelector('.tools');
+    let screenW=window.innerWidth;
+    let screenH=window.innerHeight;
     var elContainer = document.querySelector('.canvas-container');
+    let canvasW,canvasH;
+    if (isMobile()){
+        canvasH = canvasW = screenW*0.8;
+        elTools.style.width = canvasW+'px';;
+        elTools.style.height = '';
+    }else{
+        canvasW = screenW*0.4;
+        canvasH = canvasW;
+        if (canvasH>screenH*0.60){
+            canvasH=canvasW=screenH*0.60;
+        }
+        elTools.style.height = canvasH+'px';
+    }
+
+    canvasH=(imgH*canvasW)/imgW;
+    elContainer.style.width = canvasW+'px';
+    elContainer.style.height=canvasH+'px';
     gElCanvas.width = elContainer.offsetWidth;
     gElCanvas.height = elContainer.offsetHeight;
+    // gElCanvas.width=canvasW;
+    // gElCanvas.height=canvasH;
 }
 
 function onGallery() {
@@ -135,7 +157,7 @@ function onImageGallery(imgName, imgId) {
 }
 
 function isMobile() {
-    return window.innerWidth <= 500 && window.innerHeight <= 600;
+    return window.innerWidth <= 500;// && window.innerHeight <= 600;
 }
 
 function switchDisplay() {
@@ -147,6 +169,7 @@ function switchDisplay() {
     if (!document.querySelector('.gallery').classList.contains('hidden')) {
         document.querySelector('.gallery-link').innerText = 'Editor';
     } else document.querySelector('.gallery-link').innerText = 'Gallery';
+    // resizeCanvas();
 }
 
 function onUpdateText() {
@@ -269,10 +292,10 @@ function onFontColorSelect(el) {
 function addListeners() {
     addMouseListeners();
     addTouchListeners();
-    // window.addEventListener('resize', () => {
-    //     resizeCanvas();
-    //     renderCanvas();
-    // });
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        renderCanvas();
+    });
 }
 
 function addMouseListeners() {

@@ -34,7 +34,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 0 1.25rem;
-    height: 33px;
+    height: 7vh;
     padding-left: 25px;
 }
 img.logo {
@@ -43,7 +43,6 @@ img.logo {
     object-fit: contain;
 }
 header nav {
-    height: 100%;
     z-index: 2;
 }
 
@@ -219,10 +218,11 @@ header nav ul li a:hover {
     justify-content: center;
     align-items: center;
     padding: 13px 25px;
+    height: 71vh;
 }
 .canvas-container {
-    width: 280px;
-    height: 280px;
+    width: 40vw;
+    height: 40vw;
     margin-right: 30px;
 }
 .tools {
@@ -230,7 +230,7 @@ header nav ul li a:hover {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    height: 280px;
+    height: 100%;
 }
 .meme-text {
     box-sizing: border-box;
@@ -238,14 +238,14 @@ header nav ul li a:hover {
     border-radius: 6px;
     color: black;
     width: 100%;
-    height: 1.5rem;
+    height: 2.5rem;
     padding: 5px 0.5px 0 10px;
 }
 .tools-row1 {
 }
 .icon {
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     border-radius: 6px;
     margin-right: 9.5px;
     background-color: #fff;
@@ -329,13 +329,16 @@ header nav ul li a:hover {
     border: 0;
     font-size: 0.625rem;
     cursor: pointer;
+    font-family: Montserrat;
+    height: 2.5rem;
+    min-width: 50px;
 }
 
 /* FOOTER */
 footer {
     text-align: center;
     background-color: #ff7f00;
-    height: 103px;
+    height: 17vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -362,6 +365,19 @@ footer small {
     display: none;
 }
 
+@media (max-width:800px){
+    .meme-text{
+        height: 1.5rem;
+    }
+    .icon{
+        height: 30px;
+        width: 30px;
+    }
+    .tools-row5 button{
+        height: 2rem;
+        min-width:unset;
+    }
+}
 @media (max-width: 500px) {
     header nav {
         background-color: #ff7f00;
@@ -493,11 +509,28 @@ footer small {
     }
     .editor {
         flex-direction: column;
+        height: unset;
     }
     .canvas-container {
         margin-right: 0;
     }
     .tools {
         margin-top: 10px;
+    }
+    .tools >div{
+        margin-top: 10px;
+    }
+    .icon{
+        width: 35px;
+        height: 35px;
+    }
+    .tools .meme-text{
+        height: 2rem;
+    }
+    .tools-row4{
+        padding: 4px 4px;
+    }
+    .tools-row5 button{
+        min-width: 50px;
     }
 }
