@@ -56,16 +56,16 @@
             <div class="tools">
                 <input type="text" class="meme-text" oninput="onUpdateText()" />
                 <div class="tools-row1 flex">
-                    <img class="icon selectable" src="img/ICONS/up-and-down-opposite-double-arrows-side-by-side.png" onclick="onUpDown()" />
-                    <img class="icon selectable" src="img/ICONS/add.png" onclick="onAddText()" />
-                    <img class="icon selectable" src="img/ICONS/trash.png" onclick="onDeleteText()" />
+                    <img class="icon selectable" src="img/icons/up-and-down-arrows.png" onclick="onUpDown()" />
+                    <img class="icon selectable" src="img/icons/add.png" onclick="onAddText()" />
+                    <img class="icon selectable" src="img/icons/trash.png" onclick="onDeleteText()" />
                 </div>
                 <div class="tools-row2 flex">
-                    <img class="icon selectable" src="img/ICONS/increase font - icon.png" onclick="onIncFont()" />
-                    <img class="icon selectable" src="img/ICONS/decrease font - icon.png" onclick="onDecFont()" />
-                    <img class="icon selectable" src="img/ICONS/align-to-left.png" onclick="onAlign('left')" />
-                    <img class="icon selectable" src="img/ICONS/center-text-alignment.png" onclick="onAlign('center')" />
-                    <img class="icon selectable" src="img/ICONS/align-to-right.png" onclick="onAlign('right')" />
+                    <img class="icon selectable" src="img/icons/increase-font.png" onclick="onIncFont()" />
+                    <img class="icon selectable" src="img/icons/decrease-font.png" onclick="onDecFont()" />
+                    <img class="icon selectable" src="img/icons/align-to-left.png" onclick="onAlign('left')" />
+                    <img class="icon selectable" src="img/icons/align-center.png" onclick="onAlign('center')" />
+                    <img class="icon selectable" src="img/icons/align-to-right.png" onclick="onAlign('right')" />
                 </div>
                 <div class="tools-row3 flex">
                     <select class="font" oninput="onSelectFont(this.value)">
@@ -80,18 +80,18 @@
                         <option value="Comic Sans MS">Comic Sans MS</option>
                     </select>
                     <input type="color" class="text-stroke" value="#000000" onchange="onStrokeColorSelect(this)" />
-                    <img class="icon selectable text-stroke-icon" src="img/ICONS/text stroke.png" onclick="onStrokeColor()" title="Text Stroke" />
+                    <img class="icon selectable text-stroke-icon" src="img/icons/text-stroke.png" onclick="onStrokeColor()" title="Text Stroke" />
                     <input type="color" class="text-color" value="#FFFFFF" onchange="onFontColorSelect(this)" />
-                    <img class="icon selectable text-color-icon" src="img/ICONS/paint-board-and-brush.png" onclick="onFontColor()" title="Text Fill Color" />
+                    <img class="icon selectable text-color-icon" src="img/icons/paint-board-and-brush.png" onclick="onFontColor()" title="Text Fill Color" />
                 </div>
                 <div class="tools-row4 flex">
-                    <img src="img/ICONS/back-svgrepo-com.svg" onclick="onLeftSticker()" />
+                    <img src="img/icons/back.svg" onclick="onLeftSticker()" />
                     <div class="stickers">
-                        <img src="img/ICONS/stickers/S1.png" onclick="onSticker(0)" />
-                        <img src="img/ICONS/stickers/S2.png" onclick="onSticker(1)" />
-                        <img src="img/ICONS/stickers/S3.png" onclick="onSticker(2)" />
+                        <img src="img/icons/stickers/s1.png" onclick="onSticker(0)" />
+                        <img src="img/icons/stickers/s2.png" onclick="onSticker(1)" />
+                        <img src="img/icons/stickers/s3.png" onclick="onSticker(2)" />
                     </div>
-                    <img src="img/ICONS/move-to-the-next-page-symbol-svgrepo-com.svg" onclick="onRightSticker()" />
+                    <img src="img/icons/next.svg" onclick="onRightSticker()" />
                 </div>
                 <div class="tools-row5 flex">
                     <button onclick="onShare()">Share on Facebook</button>

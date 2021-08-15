@@ -3,14 +3,13 @@ let gIsChangeSize;
 let handleSize = 15;
 var gMeme = {};
 
+let gStickers = ['img/icons/stickers/s1.png', 'img/icons/stickers/s2.png', 'img/icons/stickers/s3.png'];
 
-let gStickers = ['img/ICONS/stickers/S1.png', 'img/ICONS/stickers/S2.png', 'img/ICONS/stickers/S3.png'];
-
-function getGMeme(){
+function getGMeme() {
     return gMeme;
 }
-function setGMeme(GMeme){
-    gMeme=GMeme;
+function setGMeme(GMeme) {
+    gMeme = GMeme;
 }
 
 function addText(currTextLine, txt) {
@@ -19,8 +18,7 @@ function addText(currTextLine, txt) {
 
 function isTextClicked(clickedPos, area) {
     if (!area) return false;
-    if (clickedPos.x > area.startX && clickedPos.x < area.startX + area.dx && clickedPos.y < area.startY && clickedPos.y > area.startY + area.dy) return true;
-    return false;
+    return clickedPos.x > area.startX && clickedPos.x < area.startX + area.dx && clickedPos.y < area.startY && clickedPos.y > area.startY + area.dy;
 }
 
 function setTextDrag(isDrag) {
@@ -46,21 +44,21 @@ function loadMeme(id) {
     gMeme = storageMemes[id];
     currTextLine = gMeme.selectedLineIdx;
     if (gMeme.lines[currTextLine].txt) document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
-    else document.querySelector('.meme-text').value='';
+    else document.querySelector('.meme-text').value = '';
     var img = new Image();
     img.src = `${gMeme.selectedImgName}`;
     img.onload = function () {
         resizeCanvas(this.width, this.height);
-    }
+    };
     renderCanvas();
 }
 
-function deleteMeme(id){
+function deleteMeme(id) {
     let storageMemes = loadFromStorage('userMemes');
-    storageMemes.splice(id,1);
+    storageMemes.splice(id, 1);
     saveToStorage('userMemes', storageMemes);
     createMemesMenu();
-    if (document.querySelector('.memes').childElementCount===0) onMemes();
+    if (document.querySelector('.memes').childElementCount === 0) onMemes();
 }
 
 function createMemesMenu() {
@@ -87,8 +85,5 @@ function setTextSize(isChangeTextSize) {
 
 function isClickedOnHandle(clickedPos) {
     let area = gMeme.lines[currTextLine].area;
-    if (clickedPos.x > area.startX + area.dx - handleSize - 1 && clickedPos.x < area.startX + area.dx && clickedPos.y < area.startY && clickedPos.y > area.startY - handleSize - 1) {
-        return true;
-    }
-    return false;
+    return clickedPos.x > area.startX + area.dx - handleSize - 1 && clickedPos.x < area.startX + area.dx && clickedPos.y < area.startY && clickedPos.y > area.startY - handleSize - 1;
 }
