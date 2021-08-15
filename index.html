@@ -12,8 +12,9 @@
     <body onload="onInit()">
         <header>
             <img src="img/logo.png" class="logo" />
+            <input id="hamburger" class="hidden" type="checkbox" />
             <nav>
-                <button class="hamburger-btn hidden" onclick="onOpenMenu()"></button>
+                <label for="hamburger" class="hamburger-btn"></label>
                 <ul>
                     <li><a class="gallery-link" onclick="onGallery()">Gallery</a></li>
                     <li><a onclick="onMemes()">Memes</a></li>
@@ -32,7 +33,7 @@
             </div>
             <a onclick="onSearchMore()">more...</a>
         </div>
-        <input type="file" class="upload-file" accept="image/png, image/jpeg" style="display:none" onchange="uploadImg(this)">
+        <input type="file" class="upload-file" accept="image/png, image/jpeg" style="display: none" onchange="uploadImg(this)" />
         <section class="gallery">
             <!-- GALLERY IMAGES -->
         </section>

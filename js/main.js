@@ -422,10 +422,6 @@ function onSave() {
     createMemesMenu();
 }
 
-function onOpenMenu() {
-    document.querySelector('nav').classList.toggle('shown');
-}
-
 function onSearchMore() {
     if (document.querySelectorAll('.search-tags span').length > 5) {
         updateTags(5);

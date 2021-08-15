@@ -393,7 +393,7 @@ footer small {
         left: 0;
         width: 100%;
     }
-    header nav.shown {
+    header input:checked + nav {
         position: absolute;
         top: 7vh;
         left: 0;
@@ -401,7 +401,7 @@ footer small {
         height: 140px;
         transition: height 1s;
     }
-    header nav.shown ul {
+    input:checked + nav ul {
         /* display: flex; */
         visibility: visible;
         opacity: 1;
@@ -425,11 +425,11 @@ footer small {
         /* bars icon
         f0c9  */
     }
-    nav.shown .hamburger-btn::before {
+    input:checked + nav .hamburger-btn::before {
         content: '\f00d';
     }
-    nav.shown .hamburger-btn {
-        top: -32px;
+    input:checked + nav .hamburger-btn {
+        top: -43px;
     }
     .hamburger-btn {
         font-family: Icons;
