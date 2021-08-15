@@ -124,18 +124,19 @@ function resizeCanvas(imgW, imgH) {
 }
 
 function onGallery() {
+    document.querySelector('#hamburger').checked = false;
     if (!document.querySelector('.gallery').classList.contains('first-show')) return;
     switchDisplay();
-    onOpenMenu();
 }
 
 function onMemes() {
+    document.querySelector('#hamburger').checked = false;
     if (document.querySelector('.memes').childElementCount === 0) return;
     document.querySelector('.memes').classList.toggle('hidden');
-    if (document.querySelector('nav').classList.contains('shown')) onOpenMenu();
 }
 
 function onImageGallery(imgName, imgId, isUpload = false) {
+    document.querySelector('#hamburger').checked = false;
     if (!isUpload) loadImage(imgName);
     currTextLine = 0;
     currPos = {};
