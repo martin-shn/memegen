@@ -1,15 +1,15 @@
 'use strict';
 let gIsChangeSize;
-let handleSize = 15;
-var gMeme = {};
+const handleSize = 15;
+let gMeme = {};
 
-let gStickers = ['img/icons/stickers/s1.png', 'img/icons/stickers/s2.png', 'img/icons/stickers/s3.png'];
+const gStickers = ['img/icons/stickers/s1.png', 'img/icons/stickers/s2.png', 'img/icons/stickers/s3.png'];
 
-function getGMeme() {
+function getMeme() {
     return gMeme;
 }
-function setGMeme(GMeme) {
-    gMeme = GMeme;
+function setMeme(meme) {
+    gMeme = meme;
 }
 
 function addText(currTextLine, txt) {
@@ -40,12 +40,12 @@ function findTextClicked(pos) {
 function loadMeme(id) {
     onMemes();
     if (!document.querySelector('.gallery').classList.contains('hidden')) switchDisplay();
-    let storageMemes = loadFromStorage('userMemes');
+    const storageMemes = loadFromStorage('userMemes');
     gMeme = storageMemes[id];
     currTextLine = gMeme.selectedLineIdx;
     if (gMeme.lines[currTextLine].txt) document.querySelector('.meme-text').value = gMeme.lines[currTextLine].txt;
     else document.querySelector('.meme-text').value = '';
-    var img = new Image();
+    const img = new Image();
     img.src = `${gMeme.selectedImgName}`;
     img.onload = function () {
         resizeCanvas(this.width, this.height);
@@ -54,7 +54,7 @@ function loadMeme(id) {
 }
 
 function deleteMeme(id) {
-    let storageMemes = loadFromStorage('userMemes');
+    const storageMemes = loadFromStorage('userMemes');
     storageMemes.splice(id, 1);
     saveToStorage('userMemes', storageMemes);
     createMemesMenu();
@@ -62,9 +62,9 @@ function deleteMeme(id) {
 }
 
 function createMemesMenu() {
-    let storageMemes = loadFromStorage('userMemes');
+    const storageMemes = loadFromStorage('userMemes');
     if (!storageMemes) return;
-    let strHTML = storageMemes
+    const strHTML = storageMemes
         .map(function (meme, idx) {
             return `<img src="${meme.thumbnail}" onclick="loadMeme(${idx})" oncontextmenu="deleteMeme(${idx})" title="Right-click to delete me">`;
         })
@@ -73,7 +73,7 @@ function createMemesMenu() {
 }
 
 function addHandle() {
-    let currArea = gMeme.lines[currTextLine].area;
+    const currArea = gMeme.lines[currTextLine].area;
     gCtx.beginPath();
     gCtx.fillStyle = 'rgba(0,0,0,0.6)';
     gCtx.fillRect(currArea.startX + currArea.dx - handleSize, currArea.startY - handleSize, handleSize + 1, handleSize + 1);
@@ -84,6 +84,6 @@ function setTextSize(isChangeTextSize) {
 }
 
 function isClickedOnHandle(clickedPos) {
-    let area = gMeme.lines[currTextLine].area;
+    const area = gMeme.lines[currTextLine].area;
     return clickedPos.x > area.startX + area.dx - handleSize - 1 && clickedPos.x < area.startX + area.dx && clickedPos.y < area.startY && clickedPos.y > area.startY - handleSize - 1;
 }

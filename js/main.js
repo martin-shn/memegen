@@ -1,24 +1,25 @@
 'use strict';
 
-var gElCanvas,
-    gCtx,
-    gIsDown = false,
-    currGMeme,
-    currArea;
+let gElCanvas;
+let gCtx;
+let gIsDown = false;
+let gCurrMeme;
+let gCurrArea;
 
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
 
-var currTextLine = 0,
-    currPos = {},
-    gLastPos;
+let currTextLine = 0;
+let currPos = {};
+let gLastPos;
 
 function onInit() {
-    currGMeme = getGMeme();
+    gCurrMeme = getMeme();
     gElCanvas = document.querySelector('canvas');
     gCtx = gElCanvas.getContext('2d');
     createGallery();
     createTags();
-    updateTags(5);
+    if (isMobile()) updateTags(tagsMobile);
+    else updateTags(tagsDesktop);
     createMemesMenu();
     addListeners();
     document.querySelector('.memes').addEventListener('contextmenu', (e) => {
@@ -28,17 +29,17 @@ function onInit() {
 
 function renderCanvas(isOutline = true) {
     // gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height);
-    currGMeme = getGMeme();
-    if (!currGMeme.selectedImgName) return;
-    var img = new Image();
-    img.src = `${currGMeme.selectedImgName}`;
+    gCurrMeme = getMeme();
+    if (!gCurrMeme.selectedImgName) return;
+    const img = new Image();
+    img.src = `${gCurrMeme.selectedImgName}`;
     img.onload = () => {
         let textWidth;
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height); //img,x,y,xend,yend
-        currGMeme.lines.forEach(function (line, idx) {
+        gCurrMeme.lines.forEach(function (line, idx) {
             if ('sticker' in line) {
                 // sticker line
-                let sticker = new Image();
+                const sticker = new Image();
                 sticker.src = gStickers[line.sticker];
                 sticker.onload = () => {
                     gCtx.drawImage(sticker, line.x, line.y, line.stickerDX, line.stickerDY);
@@ -57,49 +58,48 @@ function renderCanvas(isOutline = true) {
         });
         //draw the outline of the selected text
         if (isOutline) {
-            if ('sticker' in currGMeme.lines[currTextLine]) {
+            if ('sticker' in gCurrMeme.lines[currTextLine]) {
                 // draw outline for sticker
                 gCtx.beginPath();
                 gCtx.strokeStyle = '#FF0000';
-                gCtx.rect(currGMeme.lines[currTextLine].x - 5, currGMeme.lines[currTextLine].y - 5, currGMeme.lines[currTextLine].stickerDX + 10, currGMeme.lines[currTextLine].stickerDY + 10);
-                currArea = { startX: currGMeme.lines[currTextLine].x - 5, startY: currGMeme.lines[currTextLine].y + currGMeme.lines[currTextLine].stickerDY + 5, dx: currGMeme.lines[currTextLine].stickerDX + 10, dy: 0 - currGMeme.lines[currTextLine].stickerDY - 10 };
-                currGMeme.lines[currTextLine].area = currArea;
+                gCtx.rect(gCurrMeme.lines[currTextLine].x - 5, gCurrMeme.lines[currTextLine].y - 5, gCurrMeme.lines[currTextLine].stickerDX + 10, gCurrMeme.lines[currTextLine].stickerDY + 10);
+                gCurrArea = { startX: gCurrMeme.lines[currTextLine].x - 5, startY: gCurrMeme.lines[currTextLine].y + gCurrMeme.lines[currTextLine].stickerDY + 5, dx: gCurrMeme.lines[currTextLine].stickerDX + 10, dy: 0 - gCurrMeme.lines[currTextLine].stickerDY - 10 };
+                gCurrMeme.lines[currTextLine].area = gCurrArea;
                 gCtx.stroke();
                 addHandle();
                 return;
             }
-            if (!currGMeme.lines[currTextLine].txt) return;
+            if (!gCurrMeme.lines[currTextLine].txt) return;
             gCtx.beginPath();
             gCtx.strokeStyle = '#FF0000';
 
-            let textHeight = currGMeme.lines[currTextLine].size;
-            switch (currGMeme.lines[currTextLine].align) {
+            const textHeight = gCurrMeme.lines[currTextLine].size;
+            switch (gCurrMeme.lines[currTextLine].align) {
                 case 'left':
-                    gCtx.rect(0, currGMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                    currArea = { startX: 0, startY: currGMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    gCtx.rect(0, gCurrMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    gCurrArea = { startX: 0, startY: gCurrMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
                     break;
                 case 'center':
-                    gCtx.rect(currGMeme.lines[currTextLine].x - textWidth / 2 - 5, currGMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                    currArea = { startX: currGMeme.lines[currTextLine].x - textWidth / 2 - 5, startY: currGMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    gCtx.rect(gCurrMeme.lines[currTextLine].x - textWidth / 2 - 5, gCurrMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    gCurrArea = { startX: gCurrMeme.lines[currTextLine].x - textWidth / 2 - 5, startY: gCurrMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
                     break;
                 case 'right':
-                    gCtx.rect(gElCanvas.width - textWidth - 10, currGMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
-                    currArea = { startX: gElCanvas.width - textWidth - 10, startY: currGMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
+                    gCtx.rect(gElCanvas.width - textWidth - 10, gCurrMeme.lines[currTextLine].y + 5, textWidth + 10, 0 - textHeight - 5);
+                    gCurrArea = { startX: gElCanvas.width - textWidth - 10, startY: gCurrMeme.lines[currTextLine].y + 5, dx: textWidth + 10, dy: 0 - textHeight - 5 };
                     break;
             }
             gCtx.stroke();
-            currGMeme.lines[currTextLine].area = currArea;
+            gCurrMeme.lines[currTextLine].area = gCurrArea;
             addHandle();
         }
     };
-    // loadImage(gMeme.selectedImgName);
 }
 
 function resizeCanvas(imgW, imgH) {
-    var elTools = document.querySelector('.tools');
-    let screenW = window.innerWidth;
-    let screenH = window.innerHeight;
-    var elContainer = document.querySelector('.canvas-container');
+    const elTools = document.querySelector('.tools');
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    const elContainer = document.querySelector('.canvas-container');
     let canvasW, canvasH;
     if (isMobile()) {
         canvasH = canvasW = screenW * 0.8;
@@ -119,8 +119,6 @@ function resizeCanvas(imgW, imgH) {
     elContainer.style.height = canvasH + 'px';
     gElCanvas.width = elContainer.offsetWidth;
     gElCanvas.height = elContainer.offsetHeight;
-    // gElCanvas.width=canvasW;
-    // gElCanvas.height=canvasH;
 }
 
 function onGallery() {
@@ -140,30 +138,26 @@ function onImageGallery(imgName, imgId, isUpload = false) {
     if (!isUpload) loadImage(imgName);
     currTextLine = 0;
     currPos = {};
-    currGMeme = {};
+    gCurrMeme = {};
     document.querySelector('.meme-text').value = '';
-    currGMeme.selectedImgId = imgId;
-    currGMeme.selectedImgName = imgName;
-    currGMeme.selectedLineIdx = 0;
-    currGMeme.lines = [
+    gCurrMeme.selectedImgId = imgId;
+    gCurrMeme.selectedImgName = imgName;
+    gCurrMeme.selectedLineIdx = 0;
+    gCurrMeme.lines = [
         {
             size: 20,
             align: 'center',
             textColor: '#FFFFFF',
             strokeColor: '#000000',
             font: 'Impact',
-            x: gElCanvas.width / 2,
-            y: 30,
         },
     ];
-    setGMeme(currGMeme);
+    setMeme(gCurrMeme);
 
     switchDisplay();
+    gCurrMeme.lines[0].x = gElCanvas.width / 2;
+    gCurrMeme.lines[0].y = 30;
     if (!isMobile()) document.querySelector('.meme-text').focus();
-}
-
-function isMobile() {
-    return window.innerWidth <= 500; // && window.innerHeight <= 600;
 }
 
 function switchDisplay() {
@@ -180,53 +174,53 @@ function switchDisplay() {
 }
 
 function onUpdateText() {
-    if ('sticker' in currGMeme.lines[currTextLine]) {
-        delete currGMeme.lines[currTextLine].sticker;
-        if (currGMeme.lines[currTextLine].align === 'right') currGMeme.lines[currTextLine].x = gElCanvas.width - 6;
+    if ('sticker' in gCurrMeme.lines[currTextLine]) {
+        delete gCurrMeme.lines[currTextLine].sticker;
+        if (gCurrMeme.lines[currTextLine].align === 'right') gCurrMeme.lines[currTextLine].x = gElCanvas.width - 6;
     }
-    let txt = document.querySelector('.meme-text').value;
+    const txt = document.querySelector('.meme-text').value;
     addText(currTextLine, txt);
     renderCanvas();
 }
 
 function onAddText() {
     document.querySelector('.meme-text').value = '';
-    currGMeme.lines.push({
+    gCurrMeme.lines.push({
         size: 20,
         align: 'center',
         textColor: '#FFFFFF',
         strokeColor: '#000000',
         font: document.querySelector('.font').value,
     });
-    currTextLine = currGMeme.lines.length - 1;
+    currTextLine = gCurrMeme.lines.length - 1;
 
     if (currTextLine === 0) currPos = { x: gElCanvas.width / 2, y: 30 };
     else if (currTextLine === 1) currPos = { x: gElCanvas.width / 2, y: gElCanvas.height - 30 };
     else currPos = { x: gElCanvas.width / 2, y: gElCanvas.height / 2 };
-    currGMeme.lines[currTextLine].x = currPos.x;
-    currGMeme.lines[currTextLine].y = currPos.y;
-    document.querySelector('.text-stroke-icon').style.backgroundColor = currGMeme.lines[currTextLine].strokeColor;
-    document.querySelector('.text-color-icon').style.backgroundColor = currGMeme.lines[currTextLine].textColor;
+    gCurrMeme.lines[currTextLine].x = currPos.x;
+    gCurrMeme.lines[currTextLine].y = currPos.y;
+    document.querySelector('.text-stroke-icon').style.backgroundColor = gCurrMeme.lines[currTextLine].strokeColor;
+    document.querySelector('.text-color-icon').style.backgroundColor = gCurrMeme.lines[currTextLine].textColor;
     renderCanvas();
     document.querySelector('.meme-text').focus();
 }
 
 function onUpDown() {
     currTextLine++;
-    if (currTextLine >= currGMeme.lines.length) currTextLine = 0;
-    if (!currGMeme.lines[currTextLine].txt && !('sticker' in currGMeme.lines[currTextLine])) return;
-    if (!('sticker' in currGMeme.lines[currTextLine])) {
-        document.querySelector('.meme-text').value = currGMeme.lines[currTextLine].txt;
-        document.querySelector('.text-stroke-icon').style.backgroundColor = currGMeme.lines[currTextLine].strokeColor;
-        document.querySelector('.text-color-icon').style.backgroundColor = currGMeme.lines[currTextLine].textColor;
-        document.querySelector('.font').value = currGMeme.lines[currTextLine].font;
+    if (currTextLine >= gCurrMeme.lines.length) currTextLine = 0;
+    if (!gCurrMeme.lines[currTextLine].txt && !('sticker' in gCurrMeme.lines[currTextLine])) return;
+    if (!('sticker' in gCurrMeme.lines[currTextLine])) {
+        document.querySelector('.meme-text').value = gCurrMeme.lines[currTextLine].txt;
+        document.querySelector('.text-stroke-icon').style.backgroundColor = gCurrMeme.lines[currTextLine].strokeColor;
+        document.querySelector('.text-color-icon').style.backgroundColor = gCurrMeme.lines[currTextLine].textColor;
+        document.querySelector('.font').value = gCurrMeme.lines[currTextLine].font;
     } else document.querySelector('.meme-text').value = '';
     renderCanvas();
 }
 
 function onDeleteText() {
-    currGMeme.lines.splice(currTextLine, 1);
-    if (currGMeme.lines.length === 0) {
+    gCurrMeme.lines.splice(currTextLine, 1);
+    if (gCurrMeme.lines.length === 0) {
         onAddText();
         return;
     }
@@ -236,44 +230,44 @@ function onDeleteText() {
 }
 
 function onIncFont() {
-    if ('sticker' in currGMeme.lines[currTextLine]) {
-        currGMeme.lines[currTextLine].stickerDX++;
-        currGMeme.lines[currTextLine].stickerDY++;
+    if ('sticker' in gCurrMeme.lines[currTextLine]) {
+        gCurrMeme.lines[currTextLine].stickerDX++;
+        gCurrMeme.lines[currTextLine].stickerDY++;
     } else {
-        currGMeme.lines[currTextLine].size++;
+        gCurrMeme.lines[currTextLine].size++;
     }
     renderCanvas();
 }
 function onDecFont() {
-    if ('sticker' in currGMeme.lines[currTextLine]) {
-        if (currGMeme.lines[currTextLine].stickerDX < 1 || currGMeme.lines[currTextLine].stickerDY < 1) return;
-        currGMeme.lines[currTextLine].stickerDX--;
-        currGMeme.lines[currTextLine].stickerDY--;
+    if ('sticker' in gCurrMeme.lines[currTextLine]) {
+        if (gCurrMeme.lines[currTextLine].stickerDX < 1 || gCurrMeme.lines[currTextLine].stickerDY < 1) return;
+        gCurrMeme.lines[currTextLine].stickerDX--;
+        gCurrMeme.lines[currTextLine].stickerDY--;
     } else {
-        if (currGMeme.lines[currTextLine].size < 1) return;
-        currGMeme.lines[currTextLine].size--;
+        if (gCurrMeme.lines[currTextLine].size < 1) return;
+        gCurrMeme.lines[currTextLine].size--;
     }
     renderCanvas();
 }
 function onAlign(align) {
-    currGMeme.lines[currTextLine].align = align;
+    gCurrMeme.lines[currTextLine].align = align;
     switch (align) {
         case 'left':
-            currGMeme.lines[currTextLine].x = 6;
+            gCurrMeme.lines[currTextLine].x = 6;
             break;
         case 'center':
-            currGMeme.lines[currTextLine].x = gElCanvas.width / 2;
+            gCurrMeme.lines[currTextLine].x = gElCanvas.width / 2;
             break;
         case 'right':
-            if ('sticker' in currGMeme.lines[currTextLine]) currGMeme.lines[currTextLine].x = gElCanvas.width - currGMeme.lines[currTextLine].stickerDY - 6;
-            else currGMeme.lines[currTextLine].x = gElCanvas.width - 6;
+            if ('sticker' in gCurrMeme.lines[currTextLine]) gCurrMeme.lines[currTextLine].x = gElCanvas.width - gCurrMeme.lines[currTextLine].stickerDY - 6;
+            else gCurrMeme.lines[currTextLine].x = gElCanvas.width - 6;
             break;
     }
     renderCanvas();
 }
 
 function onSelectFont(font) {
-    currGMeme.lines[currTextLine].font = font;
+    gCurrMeme.lines[currTextLine].font = font;
     gCtx.direction = 'ltr';
     if (font === 'Secular') gCtx.direction = 'rtl';
     renderCanvas();
@@ -287,12 +281,12 @@ function onFontColor() {
 
 function onStrokeColorSelect(el) {
     document.querySelector('.text-stroke-icon').style.backgroundColor = el.value;
-    currGMeme.lines[currTextLine].strokeColor = el.value;
+    gCurrMeme.lines[currTextLine].strokeColor = el.value;
     renderCanvas();
 }
 function onFontColorSelect(el) {
     document.querySelector('.text-color-icon').style.backgroundColor = el.value;
-    currGMeme.lines[currTextLine].textColor = el.value;
+    gCurrMeme.lines[currTextLine].textColor = el.value;
     renderCanvas();
 }
 
@@ -323,7 +317,7 @@ function onClick(ev) {
     // ev.preventDefault();
     const pos = getEvPos(ev);
     // if (!isTextClicked(pos, currArea)) return;
-    let clickedLine = findTextClicked(pos);
+    const clickedLine = findTextClicked(pos);
     if (clickedLine >= 0) currTextLine = clickedLine;
     else return;
     currTextLine--;
@@ -334,21 +328,21 @@ function onClick(ev) {
 function onDown(ev) {
     ev.preventDefault();
     const pos = getEvPos(ev);
-    let clickedLine = findTextClicked(pos);
+    const clickedLine = findTextClicked(pos);
     if (clickedLine >= 0) currTextLine = clickedLine;
     else return;
     if (isClickedOnHandle(pos)) setTextSize(true);
     else setTextDrag(true);
     gLastPos = pos;
-    if (currGMeme.lines[currTextLine].align !== 'center') {
-        currGMeme.lines[currTextLine].x = pos.x;
-        currGMeme.lines[currTextLine].align = 'center';
+    if (gCurrMeme.lines[currTextLine].align !== 'center') {
+        gCurrMeme.lines[currTextLine].x = pos.x;
+        gCurrMeme.lines[currTextLine].align = 'center';
     }
     document.body.style.cursor = 'grabbing';
-    document.querySelector('.font').value = currGMeme.lines[currTextLine].font;
-    document.querySelector('.text-stroke-icon').style.backgroundColor = currGMeme.lines[currTextLine].strokeColor;
-    document.querySelector('.text-color-icon').style.backgroundColor = currGMeme.lines[currTextLine].textColor;
-    document.querySelector('.meme-text').value = currGMeme.lines[currTextLine].txt;
+    document.querySelector('.font').value = gCurrMeme.lines[currTextLine].font;
+    document.querySelector('.text-stroke-icon').style.backgroundColor = gCurrMeme.lines[currTextLine].strokeColor;
+    document.querySelector('.text-color-icon').style.backgroundColor = gCurrMeme.lines[currTextLine].textColor;
+    document.querySelector('.meme-text').value = gCurrMeme.lines[currTextLine].txt ? gCurrMeme.lines[currTextLine].txt : '';
     renderCanvas();
 }
 
@@ -366,11 +360,11 @@ function onMove(ev) {
         const pos = getEvPos(ev);
         const dx = pos.x - gLastPos.x;
         const dy = pos.y - gLastPos.y;
-        currGMeme.lines[currTextLine].area.dx += dx;
-        currGMeme.lines[currTextLine].stickerDX += dx;
-        currGMeme.lines[currTextLine].area.dy += dy;
-        currGMeme.lines[currTextLine].stickerDY += dy;
-        if (currGMeme.lines[currTextLine].size > 1 || currGMeme.lines[currTextLine].size + dx > 1) currGMeme.lines[currTextLine].size += dx;
+        gCurrMeme.lines[currTextLine].area.dx += dx;
+        gCurrMeme.lines[currTextLine].stickerDX += dx;
+        gCurrMeme.lines[currTextLine].area.dy += dy;
+        gCurrMeme.lines[currTextLine].stickerDY += dy;
+        if (gCurrMeme.lines[currTextLine].size > 1 || gCurrMeme.lines[currTextLine].size + dx > 1) gCurrMeme.lines[currTextLine].size += dx;
         gLastPos = pos;
         renderCanvas();
     }
@@ -409,23 +403,14 @@ function onDownload() {
 }
 
 function onSave() {
-    currGMeme.selectedLineIdx = currTextLine;
-    currGMeme.thumbnail = gElCanvas.toDataURL('image/jpeg', 0.1);
-    let userMemes = loadFromStorage('userMemes');
-    if (userMemes) {
-        // add to storage
-        userMemes.push(currGMeme);
-    } else {
-        // create first storage
-        userMemes = [currGMeme];
-    }
-    saveToStorage('userMemes', userMemes);
+    saveMeme(gCurrMeme);
     createMemesMenu();
 }
 
 function onSearchMore() {
-    if (document.querySelectorAll('.search-tags span').length > 5) {
-        updateTags(5);
+    if (document.querySelector('.search-container a').innerText === 'close!') {
+        if (isMobile()) updateTags(tagsMobile);
+        else updateTags(tagsDesktop);
         document.querySelector('.search-container a').innerText = 'more...';
     } else {
         updateTags();
@@ -435,19 +420,19 @@ function onSearchMore() {
 }
 
 function onSearchKeywords(searchText) {
-    let searchResults = findImgs(searchText);
+    const searchResults = findImgs(searchText);
     createGallery(searchResults);
 }
 
 function onSticker(stickerId) {
     document.querySelector('.meme-text').value = '';
-    delete currGMeme.lines[currTextLine].txt;
-    currGMeme.lines[currTextLine].sticker = stickerId;
-    currGMeme.lines[currTextLine].x = gElCanvas.width / 2;
-    currGMeme.lines[currTextLine].y = gElCanvas.height / 2;
-    currGMeme.lines[currTextLine].stickerDX = 50;
-    currGMeme.lines[currTextLine].stickerDY = 50;
-    currGMeme.lines[currTextLine].align = 'center';
+    delete gCurrMeme.lines[currTextLine].txt;
+    gCurrMeme.lines[currTextLine].sticker = stickerId;
+    gCurrMeme.lines[currTextLine].x = gElCanvas.width / 2;
+    gCurrMeme.lines[currTextLine].y = gElCanvas.height / 2;
+    gCurrMeme.lines[currTextLine].stickerDX = 50;
+    gCurrMeme.lines[currTextLine].stickerDY = 50;
+    gCurrMeme.lines[currTextLine].align = 'center';
     renderCanvas();
 }
 

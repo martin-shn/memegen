@@ -1,6 +1,6 @@
 'use strict';
 
-let memeImgs = [
+const memeImgs = [
     { id: 1, tags: ['USA', 'trump', 'finger'] },
     { id: 2, tags: ['cartoon', 'kids', 'dance'] },
     { id: 3, tags: ['baby', 'sleep', 'dog'] },
@@ -40,15 +40,15 @@ let memeImgs = [
     { id: 37, tags: ['TV', 'kids', 'cartoon', 'explain'] },
 ];
 
-function createGallery(data = memeImgs) {
-    memeImgs.forEach(function (meme) {
-        meme.name = 'img/gallery/'+meme.id + '.jpg';
+function createGallery(imgs=memeImgs) {
+    imgs.forEach(function (meme) {
+        meme.url = 'img/gallery/'+meme.id + '.jpg';
     });
-    var elGallery = document.querySelector('.gallery');
+    const elGallery = document.querySelector('.gallery');
     //<img class="img id-1" src="img/gallery/1.jpg" onclick="onImageGallery(this)" />
-    let strHTML = data
+    const strHTML =imgs
         .map(function (memeImg) {
-            return `<img class="img id-${memeImg.id}" src="${memeImg.name}" onclick="onImageGallery('${memeImg.name}',${memeImg.id})" />`;
+            return `<img class="img id-${memeImg.id}" src="${memeImg.url}" onclick="onImageGallery('${memeImg.url}',${memeImg.id})" />`;
         })
         .join('');
     elGallery.innerHTML = `<img class="img" src="img/upload.png" onclick="onUpload()" title="Upload your own image">` + strHTML;
@@ -56,7 +56,7 @@ function createGallery(data = memeImgs) {
 
 function loadImage(imgName) {
     // console.log(imgId);
-    var img = new Image();
+    const img = new Image();
     img.src = `${imgName}`;
     img.onload = function () {
         resizeCanvas(this.width, this.height);
@@ -65,7 +65,7 @@ function loadImage(imgName) {
 }
 
 function uploadImg(elFile) {
-    var img = new Image();
+    const img = new Image();
     img.src = URL.createObjectURL(elFile.files[0]);
     img.onload = function () {
         resizeCanvas(this.width, this.height);
@@ -74,11 +74,3 @@ function uploadImg(elFile) {
     onImageGallery(img.src, makeId(),true)
 }
 
-function makeId(length = 6) {
-    var txt = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (var i = 0; i < length; i++) {
-        txt += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return txt;
-}
