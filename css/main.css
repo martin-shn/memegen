@@ -238,6 +238,7 @@ header nav ul li a:hover {
     align-items: center;
     justify-content: space-between;
     height: 100%;
+    max-width: 40vh;
 }
 .meme-text {
     box-sizing: border-box;
@@ -248,8 +249,7 @@ header nav ul li a:hover {
     height: 2.5rem;
     padding: 5px 0.5px 0 10px;
 }
-.tools-row1 {
-}
+
 .icon {
     height: 40px;
     width: 40px;
@@ -282,8 +282,7 @@ header nav ul li a:hover {
     margin-right: 9px;
     font-size: 0.625rem;
 }
-.tools-row3 .font option {
-}
+
 .text-stroke {
     height: 0;
     width: 0;
@@ -316,11 +315,13 @@ header nav ul li a:hover {
 .stickers {
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: flex-start;
+    overflow: hidden;
 }
 .stickers img {
     height: 35px;
     cursor: pointer;
+    margin: 0 10px;
 }
 
 .tools-row5 {
@@ -374,14 +375,20 @@ footer small {
 
 @media (max-width: 800px) {
     .meme-text {
-        height: 1.5rem;
+        height: 1.8rem;
     }
     .icon {
         height: 30px;
         width: 30px;
     }
+    .tools-row4 {
+        padding: 5px 0;
+    }
+    .stickers img {
+        height: 25px;
+    }
     .tools-row5 button {
-        height: 2rem;
+        height: 1.8rem;
         min-width: unset;
     }
 }
@@ -529,6 +536,7 @@ footer small {
     }
     .tools {
         margin-top: 10px;
+        max-width: none;
     }
     .tools > div {
         margin-top: 10px;

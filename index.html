@@ -69,15 +69,7 @@
                 </div>
                 <div class="tools-row3 flex">
                     <select class="font" oninput="onSelectFont(this.value)">
-                        <option value="Impact" selected>Impact</option>
-                        <option value="Lato">Lato</option>
-                        <option value="Secular">Secular(hebrew)</option>
-                        <option value="Arial">Arial</option>
-                        <option value="Times New Roman">Times New Roman</option>
-                        <option value="Courier">Courier</option>
-                        <option value="Helvetica">Helvetica</option>
-                        <option value="Tahoma">Tahoma</option>
-                        <option value="Comic Sans MS">Comic Sans MS</option>
+                        <!-- ALL FONTS -->
                     </select>
                     <input type="color" class="text-stroke" value="#000000" onchange="onStrokeColorSelect(this)" />
                     <img class="icon selectable text-stroke-icon" src="img/icons/text-stroke.png" onclick="onStrokeColor()" title="Text Stroke" />
@@ -85,13 +77,11 @@
                     <img class="icon selectable text-color-icon" src="img/icons/paint-board-and-brush.png" onclick="onFontColor()" title="Text Fill Color" />
                 </div>
                 <div class="tools-row4 flex">
-                    <img src="img/icons/back.svg" onclick="onLeftSticker()" />
+                    <img src="img/icons/back.svg" onclick="onScrollSticker('back')" />
                     <div class="stickers">
-                        <img src="img/icons/stickers/s1.png" onclick="onSticker(0)" />
-                        <img src="img/icons/stickers/s2.png" onclick="onSticker(1)" />
-                        <img src="img/icons/stickers/s3.png" onclick="onSticker(2)" />
+                        <!-- ALL STICKERS -->
                     </div>
-                    <img src="img/icons/next.svg" onclick="onRightSticker()" />
+                    <img src="img/icons/next.svg" onclick="onScrollSticker('next')" />
                 </div>
                 <div class="tools-row5 flex">
                     <button onclick="onShare()">Share on Facebook</button>

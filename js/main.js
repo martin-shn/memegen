@@ -17,6 +17,8 @@ function onInit() {
     gElCanvas = document.querySelector('canvas');
     gCtx = gElCanvas.getContext('2d');
     createGallery();
+    createStickers();
+    createFonts();
     createTags();
     if (isMobile()) updateTags(tagsMobile);
     else updateTags(tagsDesktop);
@@ -443,4 +445,8 @@ function onUpload() {
 function onClearSearch() {
     document.querySelector('.search-container input').value = '';
     onSearchKeywords('');
+}
+function onScrollSticker(direction) {
+    direction = direction === 'next' ? 60 : -60;
+    document.querySelector('.stickers').scrollBy({ left: direction, behavior: 'smooth' });
 }

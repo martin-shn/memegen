@@ -3,7 +3,7 @@ let gIsChangeSize;
 const handleSize = 15;
 let gMeme = {};
 
-const gStickers = ['img/icons/stickers/s1.png', 'img/icons/stickers/s2.png', 'img/icons/stickers/s3.png'];
+const gStickers = ['img/icons/stickers/s1.png', 'img/icons/stickers/s2.png', 'img/icons/stickers/s3.png', 'img/icons/stickers/s4.png', 'img/icons/stickers/s5.png', 'img/icons/stickers/s6.png', 'img/icons/stickers/s7.png', 'img/icons/stickers/s8.png', 'img/icons/stickers/s9.png', 'img/icons/stickers/s10.png'];
 
 function getMeme() {
     return gMeme;
@@ -86,4 +86,29 @@ function setTextSize(isChangeTextSize) {
 function isClickedOnHandle(clickedPos) {
     const area = gMeme.lines[currTextLine].area;
     return clickedPos.x > area.startX + area.dx - handleSize - 1 && clickedPos.x < area.startX + area.dx && clickedPos.y < area.startY && clickedPos.y > area.startY - handleSize - 1;
+}
+
+function createStickers() {
+    document.querySelector('.stickers').innerHTML = gStickers
+        .map(function (sticker, idx) {
+            return `<img src="${sticker}" onclick="onSticker(${idx})" />`;
+        })
+        .join('');
+}
+
+function createFonts() {
+    const fonts = ['Impact', 'Lato', 'Secular:Secular(hebrew)', 'Arial', 'Times New Roman', 'Courier', 'Helvetica', 'Tahoma', 'Comic Sans MS'];
+    document.querySelector('.font').innerHTML = fonts
+        .map(function (font) {
+            let fontName;
+            let fontLabel;
+            fontName = fontLabel = font;
+            let div = font.indexOf(':');
+            if (div>0) {
+                fontName = font.substr(0, div);
+                fontLabel = font.substr(div + 1);
+            }
+            return `<option value="${fontName}" style="font-family:${fontName}">${fontLabel}</option>`;
+        })
+        .join('');
 }
